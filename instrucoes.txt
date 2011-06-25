@@ -1,0 +1,8 @@
+----------------Trabalho final da disciplina de compiladores------------------
+Autores:	Felipe Buzatti Nascimento
+		Letícia Lana Cherchiglia
+
+Uso para o exemplo.txt:
+* Para compilar o trabalho e a MEPA (compilação geral) e executar utilizando o exemplo.txt
+existente na pastas testes, usa-se o comando 'make run' através do makefile existente 
+nesta mesma pasta.

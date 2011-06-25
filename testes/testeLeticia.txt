@@ -1,0 +1,14 @@
+program testeA
+declare
+integer p, q, a, b, c;
+do 
+read(p, a);
+read(q, b);
+if a < b 
+then 
+c := a + b;
+else 
+c := a + b * c;
+end;
+write(c);
+end

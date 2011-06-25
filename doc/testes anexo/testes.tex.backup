@@ -1,0 +1,259 @@
+
+\documentclass[a4paper,12pt]{article}
+\usepackage[brazil]{babel}
+\usepackage[utf8]{inputenc}
+
+\title{\textbf{Trabalho Prático de Compiladores I \\ Etapa 4 e final: Compilador Integrado \\Anexo I: Testes realizados e saídas}}
+\author{
+   Felipe Buzatti e Letícia Lana Cherchiglia \\
+   \{buzatti,letslc\}@dcc.ufmg.br \\ \\
+   \textit{Departamento de Ciência da Computação}\\
+   \textit{Universidade Federal de Minas Gerais}\\
+}
+\date{20 de Junho de 2011}
+
+\begin{document}
+\maketitle
+
+\section{Testes e saídas}
+\subsection{teste1.txt}
+
+\begin{footnotesize}\begin{verbatim}
+program teste1
+declare 
+   integer a, b, c, d;
+do
+   read(b, c, d);
+   a := b + -c * (b + d);
+   write(a);
+end
+\end{verbatim}\end{footnotesize}
+
+\subsection{Saída para valores de entrada 2,3,4}
+
+\begin{footnotesize}\begin{verbatim}
+INPP
+AMEM 4
+LEIT
+ARMZ 0 1
+LEIT
+ARMZ 0 2
+LEIT
+ARMZ 0 3
+CRVL 0 1
+CRVL 0 2
+INVR
+CRVL 0 1
+CRVL 0 3
+SOMA
+MULT
+SOMA
+ARMZ 0 0
+CRVL 0 0
+IMPR
+PARA
+\end{verbatim}\end{footnotesize}
+
+\subsection{teste2.txt}
+
+\begin{footnotesize}\begin{verbatim}
+program teste2
+declare
+   integer p, q, a, b, c;
+do
+   p := 1;
+   read(q, b);
+   c := 2;
+   if q < p 
+   then
+      a := b;
+   else
+      a := b * c;
+   end;
+   if a < 0
+   then
+      a := -a;
+   end;
+   write(a, b);
+end
+\end{verbatim}\end{footnotesize}
+
+\subsection{Saída para valores de entrada 2,3}
+
+\begin{footnotesize}\begin{verbatim}
+INPP
+AMEM 5
+CRCT 1
+ARMZ 0 0
+LEIT
+ARMZ 0 1
+LEIT
+ARMZ 0 3
+CRCT 2
+ARMZ 0 4
+CRVL 0 1
+CRVL 0 0
+CMME
+DSVF LIE0
+CRVL 0 3
+ARMZ 0 2
+DSVS LIE1
+LIE0 CRVL 0 3
+CRVL 0 4
+MULT
+ARMZ 0 2
+LIE1 CRVL 0 2
+CRCT 0
+CMME
+DSVF LI0
+CRVL 0 2
+INVR
+ARMZ 0 2
+LI0 CRVL 0 2
+IMPR
+CRVL 0 3
+IMPR
+PARA
+\end{verbatim}\end{footnotesize}
+
+\subsection{teste3.txt}
+\begin{footnotesize}\begin{verbatim}
+program teste3
+declare
+   integer a, b, c;
+   boolean x, y, z;
+do
+   read(c, b);
+   z := b < c;
+   y := true;
+   a := 1;
+   while c < b
+   do
+      a := a + b;
+      b := b + -1;
+      y := not y;
+   end;
+   z := c < a;
+   if z 
+   then 
+      a := 0;
+   end;
+   write(a);
+end
+\end{verbatim}\end{footnotesize}
+
+\subsection{Saída para valores de entrada 4,4}
+
+\begin{footnotesize}\begin{verbatim}
+INPP
+AMEM 6
+LEIT
+ARMZ 0 2
+LEIT
+ARMZ 0 1
+CRVL 0 1
+CRVL 0 2
+CMME
+ARMZ 0 5
+CRCT 1
+ARMZ 0 4
+CRCT 1
+ARMZ 0 0
+LW0 CRVL 0 2
+CRVL 0 1
+CMME
+DSVF LW1
+CRVL 0 0
+CRVL 0 1
+SOMA
+ARMZ 0 0
+CRVL 0 1
+CRCT 1
+INVR
+SOMA
+ARMZ 0 1
+CRVL 0 4
+NEGA
+ARMZ 0 4
+DSVS LW0
+LW1 CRVL 0 2
+CRVL 0 0
+CMME
+ARMZ 0 5
+CRVL 0 5
+DSVF LI0
+CRCT 0
+ARMZ 0 0
+LI0 CRVL 0 0
+IMPR
+PARA
+\end{verbatim}\end{footnotesize}
+
+\subsection{testeA.txt}
+\begin{footnotesize}\begin{verbatim}
+program testeA
+declare
+   integer a, b;
+   boolean c;
+do 
+   read(a, b);
+   c:= a < b*3;
+   write(c);
+end
+\end{verbatim}\end{footnotesize}
+
+\subsection{Saída para valores de entrada 10,2}
+
+\begin{footnotesize}\begin{verbatim}
+INPP
+AMEM 3
+LEIT
+ARMZ 0 0
+LEIT
+ARMZ 0 1
+CRVL 0 0
+CRVL 0 1
+CRCT 3
+MULT
+CMME
+ARMZ 0 2
+CRVL 0 2
+IMPR
+PARA
+\end{verbatim}\end{footnotesize}
+
+\subsection{testeB.txt}
+
+\begin{footnotesize}\begin{verbatim}
+program testeB
+declare
+   integer i, j, k,l;
+   boolean b;
+do 
+   i := 4 * (5+3) * 5;
+   j := 100 + i;
+   k := i * j;
+   l := i * j + k;
+   b := k = l;  
+   write(k,l,b);
+end
+\end{verbatim}\end{footnotesize}
+
+\subsection{Saída}
+
+\begin{footnotesize}\begin{verbatim}
+\end{verbatim}\end{footnotesize}
+
+\subsection{testeA.txt}
+
+\begin{footnotesize}\begin{verbatim}
+\end{verbatim}\end{footnotesize}
+
+\subsection{Saída para valores de entrada 10,2}
+
+\begin{footnotesize}\begin{verbatim}
+\end{verbatim}\end{footnotesize}
+
+
+\end{document}
+

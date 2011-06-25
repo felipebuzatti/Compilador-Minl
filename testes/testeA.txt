@@ -1,0 +1,9 @@
+program testeA
+declare
+   integer a, b;
+   boolean c;
+do 
+   read(a, b);
+   c:= a < b*3;
+   write(c);
+end

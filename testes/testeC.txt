@@ -1,0 +1,10 @@
+program teste3
+declare
+integer j, k;
+array 100 integer a
+array 100 integer b;
+array 100 integer c
+do i := 3; j := 4; k := 2;
+a(i) := a(2*i+3) + b(j) + c(3);
+c(i) := a(i)
+end

@@ -1,0 +1,19 @@
+program teste2
+declare
+	integer p, q, a, b, c;
+do
+	p := 1;
+	read(q, b);
+	c := 2;
+	if q < p 
+	then
+		a := b;
+	else
+		a := b * c;
+	end;
+	if a < 0
+	then
+		a := -a;
+	end;
+	write(a, b);
+end

@@ -1,0 +1,6 @@
+program teste1
+declare 
+	integer a;
+do
+	a := 1;
+end

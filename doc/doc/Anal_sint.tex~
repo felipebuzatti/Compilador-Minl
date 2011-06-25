@@ -1,0 +1,74 @@
+
+\documentclass[a4paper,12pt]{article}
+\usepackage[brazil]{babel}
+\usepackage[utf8]{inputenc}
+
+\title{\textbf{Trabalho Prático de Compiladores I \\ Etapa 3: Analisador Sintático}}
+\author{
+        Felipe Buzatti e Letícia Lana Cherchiglia \\
+	\{buzatti,letslc\}@dcc.ufmg.br \\ \\
+        \textit{Departamento de Ciência da Computação}\\
+        \textit{Universidade Federal de Minas Gerais}\\
+}
+\date{23 de Maio de 2011}
+
+
+\begin{document}
+
+\maketitle
+
+\section{Introdução}
+\label{intro}
+
+O objetivo desse trabalho é apresentar um analisador sintático para a linguagem minL. A idéia de um analisador sintático é receber o fluxo de tokens provenientes da análise léxica e aplicar as regras da gramática da linguagem dada, de modo a obtermos como saída uma árvore gramatical ou árvore de sintaxe.
+
+Decidimos utilizar neste trabalho um software livre gerador de parser, o Bison \cite{bison}. Mais informações sobre esta ferramenta se encontram a seguir.
+
+Esse analisador sintático está acoplado ao nosso analisador léxico do trabalho prático anterior, sendo que ambos mais a tabela de símbolos são partes de um futuro compilador, nosso trabalho final na disciplina.
+
+\section{Implementação}
+Como dito em~\ref{intro} esse analisador foi construído com o auxílio de ferramentas, tais como o Bison. Entretanto, o analisados léxico acoplado não utiliza nenhum tipo de ferramentas, como o (F)lex por exemplo.
+
+\subsection{Ferramenta utilizada}
+Na implementação do analisador sintático para a linguagem minL, foi utilizada
+uma ferramenta auxiliar, chamada Bison \cite{bison}. Ele é um
+gerador de analisador sintático que, a partir da descrição de uma gramática 
+e algumas configurações, gera o código para um analisador sintático LALR(1).
+
+É importante ressaltar que esta ferramenta, além de open-source, consegue gerar um código na linguagem C, linguagem utilizada por nós durante o trabalho em execução, o que foi fator decisivo para sua escolha.
+
+Não identificamos nenhum tipo de conflito na gramática do minL disponibilizada para nós na especificação deste trabalho. Talvez este fato resulte na nossa interpretação em assumir que onde tinha uma regra à direita entre colchetes, aquilo podia ou não resultar e que onde tinha regras entre chaves, existia uma repetição.
+
+\subsection{Integração com analisador léxico}
+Para a integração do analisador sintático com o nosso analisador léxico foram necessárias algumas mudanças. Por exemplo, na saída do analisador léxico, que antes era somente impressa na tela e agora deveria ser exportada para o analisador sintático através de algum tipo de estrutura de dados. Escolhemos utilizar uma lista encadeada para tal, por sua simplicidade de implementação. Desta forma, são armazenados os itens da linha que o analisador léxico está lendo, tokens estes que são repassados para o analisador sintático.
+
+Foi criado um módulo realizar a chamada da função yyparse() do Bison, de modo assim temos a integração plena do analisador léxico com o analisador semântico e a saída corresponde a 
+
+
+\section{Formato dos dados}
+\subsection{Entrada}
+A entrada do programa pode ser feita em qualquer arquivo de texto puro. Obviamente a execução correta pressupõe que esse arquivo de texto contenha programas válidos da linguagem minL, mas o analisador é capaz de capturar erros para situações inesperadas, abortando a análise.
+
+\subsection{Saída}
+
+
+\section{Uso do analisador}
+O programa analisador deve ser compilado usando o \textit{gcc}.
+Seu uso como um programa separado tem um caráter necessariamente de teste. A sintaxe nesse caso é simplesmente:
+\begin{verbatim}
+ <nome_do_programa> <nome_do_arquivo_minL>
+\end{verbatim}
+
+
+\section{arquivos utilizados}
+A implementação está separada em FIXME arquivos: FIXME. Uma cópia impressa de todos os arquivos utilizados acompanha essa documentação, anexa ao final.
+
+\section{Testes}
+Para testar a corretude do analisador foram feitos testes usando seis exemplos contidos na especificação do trabalho, que se encontram em anexo, após o código. Também se encontram em anexo os respectivos resultados destes testes.
+
+\section{Conclusão}
+O analisador sintático foi construído com o uso de ferramentas auxiliares, o Bison, e funciona corretamente. A integração com o nosso analisador léxico demonstrou que este funciona corretamente, não sendo portanto realmente necessário o uso de ferramentas na etapa 2 deste trabalho prático.
+\bibliographystyle{sbc}
+\bibliography{cs}
+\end{document}
+
