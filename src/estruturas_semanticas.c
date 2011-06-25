@@ -119,16 +119,16 @@ tipo_lista_comandos * factor1(char * identificador)
 tipo_lista_comandos * factor_a2(tipo_lista_comandos * lista_comandos)
 {		
 	char nome_comando[TAM_COM];
-	sprintf(nome_comando, "NEGA");
+	sprintf(nome_comando, "INVR");
 	insere_comando(lista_comandos, nome_comando);
 	
 	return lista_comandos;
 }
 
-tipo_lista_comandos * factor_a3(tipo_lista_comandos * lista_comandos)
+tipo_lista_comandos * expr_bool_not2(tipo_lista_comandos * lista_comandos)
 {		
 	char nome_comando[TAM_COM];
-	sprintf(nome_comando, "INVR");
+	sprintf(nome_comando, "NEGA");
 	insere_comando(lista_comandos, nome_comando);
 	
 	return lista_comandos;
@@ -145,7 +145,7 @@ tipo_lista_comandos * term2(tipo_lista_comandos * lista1, tipo_lista_comandos * 
 	return lista_comandos;
 }
 
-tipo_lista_comandos * term3(tipo_lista_comandos * lista1, tipo_lista_comandos * lista2)
+tipo_lista_comandos * expr_bool_and2(tipo_lista_comandos * lista1, tipo_lista_comandos * lista2)
 {
 	tipo_lista_comandos * lista_comandos = concatena_listas_comandos(lista1, lista2);
 
@@ -167,7 +167,7 @@ tipo_lista_comandos * simple_expr2(tipo_lista_comandos * lista1, tipo_lista_coma
 	return lista_comandos;
 }
 
-tipo_lista_comandos * simple_expr3(tipo_lista_comandos * lista1, tipo_lista_comandos * lista2)
+tipo_lista_comandos * expr_boolean2(tipo_lista_comandos * lista1, tipo_lista_comandos * lista2)
 {
 	tipo_lista_comandos * lista_comandos = concatena_listas_comandos(lista1, lista2);
 

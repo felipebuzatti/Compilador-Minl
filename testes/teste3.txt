@@ -13,7 +13,7 @@ do
 		b := b + -1;
 		y := not y;
 	end;
-	z := c < a;
+	z := c < a and (x or y);
 	if z 
 	then 
 		a := 0;

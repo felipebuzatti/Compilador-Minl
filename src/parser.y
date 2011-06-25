@@ -187,7 +187,7 @@ unlabelled_stmt: assign_stmt 					{$$ = $1}
 	| block_stmt								{$$ = NULL}
 ;
 
-assign_stmt: variable ATRIBUI expression		{$$ = assign_stmt($1, $3);}
+assign_stmt: variable ATRIBUI expr_boolean		{$$ = assign_stmt($1, $3);}
 ;
 
 variable: identifier 							{$$ = $1}
@@ -201,7 +201,7 @@ if_stmt: IF condition THEN stmt_list END				{$$ = if_stmt1($2, $4);}
 	| IF condition THEN stmt_list ELSE stmt_list END	{$$ = if_stmt2($2, $4, $6);}
 ;
 
-condition: expression								{$$ = $1}
+condition: expr_boolean								{$$ = $1}
 ;
 
 while_stmt: WHILE condition DO stmt_list END		{$$ = while_stmt($2, $4);}
@@ -227,16 +227,16 @@ expr_list: expression				{$$ = expr_list1($1);}
 	| expr_list ',' expression		{$$ = expr_list2($1, $3);}
 ;
 
-expr_boolean: expr_bool_and
-	| expr_bool_and OR expr_boolean
+expr_boolean: expr_bool_and			{$$ = $1}
+	| expr_bool_and OR expr_boolean	{$$ = expr_boolean2($1, $3);}
 ;
 
-expr_bool_and: expr_bool_not
-	| expr_bool_not AND expr_bool_and
+expr_bool_and: expr_bool_not			{$$ = $1}
+	| expr_bool_not AND expr_bool_and	{$$ = expr_bool_and2($1, $3);}
 ;
 
-expr_bool_not: expression
-	| NOT expression
+expr_bool_not: expression			{$$ = $1}
+	| NOT expression				{$$ = expr_bool_not2($2);}
 ;
 
 expression: simple_expr				{$$ = $1}
@@ -246,17 +246,14 @@ expression: simple_expr				{$$ = $1}
 
 simple_expr: term				{$$ = $1}
 	| simple_expr '+' term	{$$ = simple_expr2($1, $3);}
-//	| simple_expr OR term	{$$ = simple_expr3($1, $3);}
 ;
 
 term: factor_a				{$$ = $1}
 	| term '*' factor_a	{$$ = term2($1, $3);}
-//	| term AND factor_a	{$$ = term3($1, $3);}
 ;
 
 factor_a: factor			{$$ = $1}
-//	| NOT factor			{$$ = factor_a2($2);}
-	| '-' factor			{$$ = factor_a3($2);}
+	| '-' factor			{$$ = factor_a2($2);}
 ;
 
 factor: variable 			{$$ = factor1($1);}
