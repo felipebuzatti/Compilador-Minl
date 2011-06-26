@@ -44,10 +44,17 @@ int variable_decl(int tipo, tipo_lista_identificadores * lista_identificadores)
 	int num_ids = 0;
 	while (aux != NULL)
 	{	
-		tipo_simbolo * aux_simb = cria_simbolo(aux->nome, NULL, valor_valido++, tipo);
-		instala_simbolo(tab_simbolos, aux_simb);
+		tipo_simbolo *verifica = recupera_simbolo(tab_simbolos, aux->nome);
+		if (verifica == NULL){ 
+		  tipo_simbolo * aux_simb = cria_simbolo(aux->nome, NULL, valor_valido++, tipo);
+		  instala_simbolo(tab_simbolos, aux_simb);		
+		  num_ids+=1;
+		}
+		else{
+		  fprintf(stderr,"ERRO! Redefinição de tipo da variável '%s'! Abortando...\n\n", aux->nome);
+		  exit(0);
+		}
 		
-		num_ids+=1;
 		aux = aux->prox;
 	}
 	
@@ -112,6 +119,7 @@ tipo_lista_comandos * factor1(char * identificador)
 	char nome_comando[TAM_COM];
 	sprintf(nome_comando, "CRVL 0 %d", aux_simb->endereco);
 	insere_comando(lista_comandos, nome_comando);
+	seta_tipo_lista(lista_comandos, aux_simb->tipo);
 	
 	return lista_comandos;
 }
@@ -127,6 +135,10 @@ tipo_lista_comandos * factor_a2(tipo_lista_comandos * lista_comandos)
 
 tipo_lista_comandos * expr_bool_not2(tipo_lista_comandos * lista_comandos)
 {		
+	if(lista_comandos->tipo != 2) {
+	  fprintf(stderr,"ERRO! Negação de tipo não booleano! Abortando...\n\n");
+	  exit(0);
+	}
 	char nome_comando[TAM_COM];
 	sprintf(nome_comando, "NEGA");
 	insere_comando(lista_comandos, nome_comando);
@@ -136,6 +148,10 @@ tipo_lista_comandos * expr_bool_not2(tipo_lista_comandos * lista_comandos)
 
 tipo_lista_comandos * term2(tipo_lista_comandos * lista1, tipo_lista_comandos * lista2)
 {
+	if (verifica_tipos(lista1, lista2,0) == 0){//tipo = 0: não pode ter bol
+	  fprintf(stderr,"\nERRO! Multiplicação incompatível (tipos diferentes)! Abortando...\n\n"); 
+	  exit(0);
+	}
 	tipo_lista_comandos * lista_comandos = concatena_listas_comandos(lista1, lista2);
 
 	char nome_comando[TAM_COM];
@@ -147,6 +163,10 @@ tipo_lista_comandos * term2(tipo_lista_comandos * lista1, tipo_lista_comandos * 
 
 tipo_lista_comandos * expr_bool_and2(tipo_lista_comandos * lista1, tipo_lista_comandos * lista2)
 {
+	if (verifica_tipos(lista1, lista2, 1) == 0){//tipo =1: só pode ter bol
+	    fprintf(stderr,"\nERRO! Esperado(s) booleano(s) para a conjunção (AND)! Abortando...\n\n"); 
+	    exit(0);
+	}
 	tipo_lista_comandos * lista_comandos = concatena_listas_comandos(lista1, lista2);
 
 	char nome_comando[TAM_COM];
@@ -158,6 +178,10 @@ tipo_lista_comandos * expr_bool_and2(tipo_lista_comandos * lista1, tipo_lista_co
 
 tipo_lista_comandos * simple_expr2(tipo_lista_comandos * lista1, tipo_lista_comandos * lista2)
 {
+ 	if (verifica_tipos(lista1, lista2, 0) == 0){//tipo = 0: não pode ter bol
+	  fprintf(stderr,"\nERRO! Soma incompatível (tipos diferentes)! Abortando...\n\n"); 
+	  exit(0);
+	}
 	tipo_lista_comandos * lista_comandos = concatena_listas_comandos(lista1, lista2);
 
 	char nome_comando[TAM_COM];
@@ -169,6 +193,10 @@ tipo_lista_comandos * simple_expr2(tipo_lista_comandos * lista1, tipo_lista_coma
 
 tipo_lista_comandos * expr_boolean2(tipo_lista_comandos * lista1, tipo_lista_comandos * lista2)
 {
+	if (verifica_tipos(lista1, lista2, 1) == 0){//tipo =1: só pode ter bol
+	    fprintf(stderr,"\nERRO! Esperado(s) booleano(s) para a disjunção (OR)! Abortando...\n\n"); 
+	    exit(0);
+	}
 	tipo_lista_comandos * lista_comandos = concatena_listas_comandos(lista1, lista2);
 
 	char nome_comando[TAM_COM];
@@ -185,15 +213,22 @@ tipo_lista_comandos * assign_stmt(char * identificador, tipo_lista_comandos * li
 	int tipo_simbolo = simbolo->tipo;
 	tipo_comando *ultimo_comando = lista_comandos->ultimo;
 	if ((strncmp("CRCT",ultimo_comando->nome,4) ==  0) && tipo_simbolo == 1){ //erro real mas botou int
-	  fprintf(stderr,"\nERRO! Atribuição inválida! Tipo declarado é diferente do tipo do valor da atribuição. Abortando...\n\n"); 
+	  fprintf(stderr,"\nERRO! Atribuição inválida! Variável declarada como real, mas valor passado é inteiro. Abortando...\n\n"); 
 	  exit(0);
 	}
-	else
+	else{
 	  if ((strncmp("CRCF",ultimo_comando->nome,4) ==  0) && tipo_simbolo == 0){ //erro int mas botou real
-	    fprintf(stderr,"\nERRO! Atribuição inválida! Tipo declarado é diferente do tipo do valor da atribuição. Abortando...\n\n");
+	    fprintf(stderr,"\nERRO! Atribuição inválida! Variável declarada como integer, mas valor passado é real. Abortando...\n\n");
 	    exit(0);
 	  }
-	
+	  else 
+	    if (((strncmp("SOMA",ultimo_comando->nome,4) ==  0) || (strncmp("MULT",ultimo_comando->nome,4) ==  0)) 
+		  && tipo_simbolo != lista_comandos->tipo){ //erro na atribuição: variável int recebendo real ou vice-versa
+	      fprintf(stderr,"\nERRO! Atribuição inválida! Variável '%s' recebe valor incompatível. Abortando...\n\n", identificador);
+	      exit(0);
+	    }
+	}
+
 	char nome_comando[TAM_COM];
 	sprintf(nome_comando, "ARMZ 0 %d", simbolo->endereco);
 	insere_comando(lista_comandos, nome_comando);
@@ -223,40 +258,53 @@ tipo_lista_comandos * constant2(float const_real)
 	return lista_comandos;
 }
 
-
-tipo_lista_comandos * relop(int tipo_rel)
+int relop(int tipo_rel)
 {
-	tipo_lista_comandos * lista_comandos = inicializa_lista_comandos();
-	
+	return tipo_rel;
+}
+
+tipo_lista_comandos * expression2(tipo_lista_comandos * lista_esq, int tipo_rel, tipo_lista_comandos * lista_dir)
+{
+	if (verifica_tipos(lista_esq, lista_dir,-1) == 0){//sem parâmetros
+	  fprintf(stderr,"\nERRO! Operações relacionais de tipos diferentes! Abortando...\n\n"); 
+	  exit(0);
+	}
+	tipo_lista_comandos * lista_expressoes = concatena_listas_comandos(lista_esq, lista_dir);
+		
 	char nome_comando[TAM_COM];
 	
+	// tipo_rel possui tipo 0 para EQ, 1 para LT, 2 para LE e 3 para DIF
 	switch (tipo_rel)
 	{
 		case 0:
-			sprintf(nome_comando, "CMIG");
+			if (lista_expressoes->tipo == 0)
+			  sprintf(nome_comando, "CMIG"); //i1=i2
+			if (lista_expressoes->tipo == 1)
+			  sprintf(nome_comando, "CMIF"); //f1=f2
 			break;
 		case 1:
-			sprintf(nome_comando, "CMME");
+			if (lista_expressoes->tipo == 0)    
+			  sprintf(nome_comando, "CMME"); //i1<i2
+			if (lista_expressoes->tipo == 1)
+			  sprintf(nome_comando, "CMNF"); //f1<f2
 			break;
 		case 2:
-			sprintf(nome_comando, "CMEG");
+			if (lista_expressoes->tipo == 0)			
+			  sprintf(nome_comando, "CMEG"); //i1<=i2
+			if (lista_expressoes->tipo == 1)
+			  sprintf(nome_comando, "CMEF"); //f1<=f2
 			break;
 		case 3:
-			sprintf(nome_comando, "CMDG");
+			if (lista_expressoes->tipo == 0)
+			  sprintf(nome_comando, "CMDG"); //i1!=i2
+			if (lista_expressoes->tipo == 1)			
+			  sprintf(nome_comando, "CMDF"); //f1!=f2
 			break;
 	}
+		
 	
-	insere_comando(lista_comandos, nome_comando);
-	
-	return lista_comandos;
-}
-
-tipo_lista_comandos * expression2(tipo_lista_comandos * lista_esq, tipo_lista_comandos * lista_rel, 
-									tipo_lista_comandos * lista_dir)
-{
-	tipo_lista_comandos * lista_expressoes = concatena_listas_comandos(lista_esq, lista_dir);
-	
-	return concatena_listas_comandos(lista_expressoes, lista_rel);
+	insere_comando(lista_expressoes, nome_comando);
+	return lista_expressoes;
 }
 
 tipo_lista_comandos * if_stmt1(tipo_lista_comandos * lista_condition, tipo_lista_comandos * lista_then)
@@ -301,7 +349,6 @@ tipo_lista_comandos * expr_list1(tipo_lista_comandos * lista_expression)
 	char nome_comando[TAM_COM];
 	sprintf(nome_comando, "BRANCO");
 	insere_comando(lista_expression, nome_comando);
-	
 	return lista_expression;
 }
 
@@ -310,7 +357,6 @@ tipo_lista_comandos * expr_list2(tipo_lista_comandos * expr_list, tipo_lista_com
 	char nome_comando[TAM_COM];
 	sprintf(nome_comando, "BRANCO");
 	insere_comando(expression, nome_comando);
-	
 	return concatena_listas_comandos(expr_list, expression);
 }
 
@@ -453,4 +499,53 @@ void libera_lista_identificadores(tipo_lista_identificadores * lista_identificad
 		lista_identificadores->primeiro = aux->prox;
 		free(aux);
 	}
+}
+
+void seta_tipo_lista(tipo_lista_comandos * lista, int tipo)
+{
+    if (tipo == 0)// int
+      lista->tipo = 0;
+    else{
+      if (tipo == 1) // real
+	lista->tipo = 1;
+      else if (tipo == 2) // bol
+	lista->tipo = 2;
+    }
+    return;
+}
+ 
+int verifica_tipos(tipo_lista_comandos * lista_esq, tipo_lista_comandos * lista_dir, int tipo)
+{
+    //TIPO = 0: não pode ter booleanos
+    //     = 1: só pode ter booleanos
+    //     =-1: sem restrições
+    if (tipo == -1){
+	if (lista_esq->tipo == lista_dir->tipo)
+	  return 1;
+	else{
+	  if (lista_esq->tipo == -1 || lista_dir->tipo == -1)
+	    return 1;
+	  else
+	    return 0;
+	}
+    }
+    if (tipo == 1){
+      if (lista_esq->tipo != 2 && lista_dir->tipo != 2)
+	  return 0;
+      else return 1;
+    }
+    if(tipo == 0){
+      if (lista_esq->tipo == 2 && lista_dir->tipo == 2)
+	  return 0;
+      if (lista_esq->tipo == lista_dir->tipo)
+	  return 1;
+	else{
+	  if (lista_esq->tipo == -1 || lista_dir->tipo == -1)
+	    return 1;
+	  else
+	    return 0;
+	}
+    }
+    return 1;
+
 }

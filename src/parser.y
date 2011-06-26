@@ -78,7 +78,7 @@ int yylex();
 %type <lista_comandos> expr_bool_not
 %type <lista_comandos> assign_stmt
 %type <lista_comandos> constant
-%type <lista_comandos> relop
+%type <unsig_int> relop
 %type <lista_comandos> if_stmt
 %type <lista_comandos> condition
 %type <lista_comandos> expr_list
