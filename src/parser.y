@@ -278,7 +278,7 @@ relop: EQ 					{$$ = relop(0);}
 constant: integer_constant	{$$ = constant1($1);}
 	| real_constant 		{$$ = constant2($1);}
 	| char_constant 		{$$ = NULL}
-	| boolean_constant		{$$ = constant1($1);}
+	| boolean_constant		{$$ = constant3($1);}
 ;
 
 boolean_constant: BOOL_CONST_T	{$$ = 1}
@@ -320,10 +320,25 @@ int yylex(){
 		
 
 	if (item_aux->value != NULL){
-		if (item_aux->token == UNSIG_REAL)
-		  memcpy(&yylval, item_aux->value, sizeof(float));
+		if (item_aux->token == UNSIG_REAL){
+			float * valor = (float*)item_aux->value;
+			yylval.unsig_real = *valor;
+		}
+		else if (item_aux->token == IDENT)
+		{
+			char * valor = (char*)item_aux->value;
+			strcpy(yylval.identificador, valor);
+		}
+		else if (item_aux->token == UNSIG_INT)
+		{
+			int * valor = (int*)item_aux->value;
+			yylval.unsig_int = *valor;
+		}
 		else
-		  memcpy(&yylval, item_aux->value, sizeof(*item_aux->value));
+		{
+			char * valor = (char*)item_aux->value;
+			yylval.char_const = *valor;
+		}
 	}
 	
 	item_cabeca = item_aux;

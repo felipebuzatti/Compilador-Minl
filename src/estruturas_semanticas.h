@@ -51,6 +51,7 @@ tipo_lista_comandos * expr_boolean2(tipo_lista_comandos * lista1, tipo_lista_com
 tipo_lista_comandos * assign_stmt(char * identificador, tipo_lista_comandos * lista_comandos);
 tipo_lista_comandos * constant1(int const_int);
 tipo_lista_comandos * constant2(float const_real);
+tipo_lista_comandos * constant3(int const_int);
 int relop(int tipo_rel);
 tipo_lista_comandos * expression2(tipo_lista_comandos * lista_esq, int tipo_rel, tipo_lista_comandos * lista_dir);
 tipo_lista_comandos * if_stmt1(tipo_lista_comandos * lista_condition, tipo_lista_comandos * lista_then);

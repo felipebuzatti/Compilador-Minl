@@ -1,19 +1,19 @@
 program teste3
 declare
 	integer a, b, c;
+	integer resultado;
 	boolean x, y, z;
 do
 	read(c, b);
-	z := b < c;
 	y := true;
 	a := 1;
+	resultado := a + b+c*5;
 	while c < b
 	do
 		a := a + b;
 		b := b + -1;
 		y := not y;
 	end;
-	z := c < a and (x or y);
 	if z 
 	then 
 		a := 0;

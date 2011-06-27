@@ -219,22 +219,10 @@ tipo_lista_comandos * assign_stmt(char * identificador, tipo_lista_comandos * li
 	tipo_simbolo * simbolo = recupera_simbolo(tab_simbolos, identificador);
 	
 	int tipo_simbolo = simbolo->tipo;
-	tipo_comando *ultimo_comando = lista_comandos->ultimo;
-	if ((strncmp("CRCT",ultimo_comando->nome,4) ==  0) && tipo_simbolo == 1){ //erro real mas botou int
-	  fprintf(stderr,"\nERRO! Atribuição inválida! Variável declarada como real, mas valor passado é inteiro. Abortando...\n\n"); 
-	  exit(0);
-	}
-	else{
-	  if ((strncmp("CRCF",ultimo_comando->nome,4) ==  0) && tipo_simbolo == 0){ //erro int mas botou real
-	    fprintf(stderr,"\nERRO! Atribuição inválida! Variável declarada como integer, mas valor passado é real. Abortando...\n\n");
-	    exit(0);
-	  }
-	  else 
-	    if (((strncmp("SOMA",ultimo_comando->nome,4) ==  0) || (strncmp("MULT",ultimo_comando->nome,4) ==  0)) 
-		  && tipo_simbolo != lista_comandos->tipo){ //erro na atribuição: variável int recebendo real ou vice-versa
-	      fprintf(stderr,"\nERRO! Atribuição inválida! Variável '%s' recebe valor incompatível. Abortando...\n\n", identificador);
-	      exit(0);
-	    }
+	if (tipo_simbolo != lista_comandos->tipo)
+	{
+		fprintf(stderr, "\nERRO! Atribuição inválida na variável '%s'! Abortando...\n\n", identificador);
+		exit(0);
 	}
 
 	char nome_comando[TAM_COM];
@@ -250,6 +238,7 @@ tipo_lista_comandos * constant1(int const_int)
 	
 	char nome_comando[TAM_COM];
 	sprintf(nome_comando, "CRCT %d", const_int);
+	seta_tipo_lista(lista_comandos, 0);
 	insere_comando(lista_comandos, nome_comando);
 	
 	return lista_comandos;
@@ -260,7 +249,20 @@ tipo_lista_comandos * constant2(float const_real)
 	tipo_lista_comandos * lista_comandos = inicializa_lista_comandos();
 	
 	char nome_comando[TAM_COM];
-	sprintf(nome_comando, "CRCF %g", const_real);
+	sprintf(nome_comando, "CRCF %.2f", const_real);
+	seta_tipo_lista(lista_comandos, 1);
+	insere_comando(lista_comandos, nome_comando);
+	
+	return lista_comandos;
+}
+
+tipo_lista_comandos * constant3(int const_int)
+{
+	tipo_lista_comandos * lista_comandos = inicializa_lista_comandos();
+	
+	char nome_comando[TAM_COM];
+	sprintf(nome_comando, "CRCT %d", const_int);
+	seta_tipo_lista(lista_comandos, 2);
 	insere_comando(lista_comandos, nome_comando);
 	
 	return lista_comandos;

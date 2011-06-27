@@ -1,8 +1,11 @@
 program teste1
 declare 
 	integer a,b;
+	real Felipe;
 	boolean c;
 do
 	a := 1;
 	b := 2;
+	Felipe := 10.2;
+	Felipe := a*b;
 end
