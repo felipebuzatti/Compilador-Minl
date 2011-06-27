@@ -1,6 +1,10 @@
 program teste1
 declare 
-	integer a;
+	integer a,b;
+	boolean c;
 do
-	a := 1.2;
+	a := 1;
+	b := 2;
+	c := a < b;
+
 end

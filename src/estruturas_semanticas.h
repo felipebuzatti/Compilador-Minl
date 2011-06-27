@@ -16,6 +16,7 @@ typedef struct
 	tipo_comando * primeiro;
 	tipo_comando * ultimo;
 	int num_decl;
+	int tipo; //0 para int, 1 para real, 2 para bol
 } tipo_lista_comandos;
 
 typedef struct str_identificador
@@ -50,9 +51,8 @@ tipo_lista_comandos * expr_boolean2(tipo_lista_comandos * lista1, tipo_lista_com
 tipo_lista_comandos * assign_stmt(char * identificador, tipo_lista_comandos * lista_comandos);
 tipo_lista_comandos * constant1(int const_int);
 tipo_lista_comandos * constant2(float const_real);
-tipo_lista_comandos * relop(int tipo_rel);
-tipo_lista_comandos * expression2(tipo_lista_comandos * lista_esq, tipo_lista_comandos * lista_rel, 
-									tipo_lista_comandos * lista_dir);
+int relop(int tipo_rel);
+tipo_lista_comandos * expression2(tipo_lista_comandos * lista_esq, int tipo_rel, tipo_lista_comandos * lista_dir);
 tipo_lista_comandos * if_stmt1(tipo_lista_comandos * lista_condition, tipo_lista_comandos * lista_then);
 tipo_lista_comandos * if_stmt2(tipo_lista_comandos * lista_condition, tipo_lista_comandos * lista_then,
 								tipo_lista_comandos * lista_else);
@@ -72,5 +72,7 @@ tipo_comando * inicializa_comando(char nome_comando[]);
 tipo_lista_identificadores * inicializa_lista_identificadores();
 void libera_lista_identificadores(tipo_lista_identificadores * lista_identificadores);
 void insere_identificador(tipo_lista_identificadores * lista_identificadores, char * nome_identificador);
+void seta_tipo_lista(tipo_lista_comandos * lista, int tipo);
+int verifica_tipos(tipo_lista_comandos * lista_esq, tipo_lista_comandos * lista_dir, int tipo);
 
 #endif /* ESTRUTURAS_SEMANTICAS_H_INCLUDED */
