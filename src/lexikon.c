@@ -4,6 +4,7 @@
 #include <string.h>
 #include "lexikon.h"
 #include "estruturas_semanticas.h"
+#include "procedimentos.h"
 #include "parser.tab.h"
 
 //macros para trabalhar com a flag tipo. Testam se o tipo se refere a uma 

@@ -33,6 +33,7 @@ typedef struct
 //////////////////////////////////////////////////////////////////////////////
 
 void program();
+tipo_lista_comandos * decl1(int num_decl);
 tipo_lista_comandos * stmt_list(tipo_lista_comandos * lista1, tipo_lista_comandos * lista2);
 tipo_lista_identificadores * ident_list1(char * identificador);
 tipo_lista_identificadores * ident_list2(tipo_lista_identificadores * lista_identificadores, char * identificador);

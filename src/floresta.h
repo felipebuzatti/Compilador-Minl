@@ -7,7 +7,7 @@
 typedef struct{
 	char lexema[MAX_NOME_SIMBOLO];
 	int endereco;
-	int tipo;
+	int tipo; //INTEGER = 0; REAL=1; BOOLEAN=2; CHAR=3; LABEL=4; PROCEDURE=5
 	void * valor;
 } tipo_simbolo;
 

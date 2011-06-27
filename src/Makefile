@@ -5,7 +5,7 @@ CFLAGS = -Wall -g -Wextra
 RM = rm -f
 
 OBJ = lexikon.o principal.o parser.tab.o estruturas_semanticas.o \
-		floresta.o
+		floresta.o procedimentos.o
 
 MAIN = ../compilador.elf
 

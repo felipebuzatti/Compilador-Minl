@@ -29,6 +29,14 @@ void program(tipo_lista_comandos * lista_comandos)
 	remove_tabela_simbolos(tab_simbolos);
 }
 
+tipo_lista_comandos * decl1(int num_decl)
+{
+	tipo_lista_comandos * lista_comandos = inicializa_lista_comandos();
+	lista_comandos->num_decl = num_decl;
+	
+	return lista_comandos;
+}
+
 tipo_lista_comandos * stmt_list(tipo_lista_comandos * lista1, tipo_lista_comandos * lista2)
 {
 	tipo_lista_comandos * lista_comandos = concatena_listas_comandos(lista1, lista2);
@@ -376,6 +384,14 @@ tipo_lista_comandos * inicializa_lista_comandos()
 
 tipo_lista_comandos * concatena_listas_comandos(tipo_lista_comandos * lista1, tipo_lista_comandos * lista2)
 {
+	
+	if (lista1->ultimo == NULL)
+	{
+		lista2->num_decl +=  lista1->num_decl;
+		free(lista1);
+		return lista2;
+	}
+
 	tipo_comando * aux_comando = lista2->primeiro;
 	
 	while (aux_comando != NULL)
@@ -385,6 +401,8 @@ tipo_lista_comandos * concatena_listas_comandos(tipo_lista_comandos * lista1, ti
 		
 		aux_comando = aux_comando->prox;
 	}
+	
+	lista1->num_decl += lista2->num_decl;
 	
 	free(lista2);
 	

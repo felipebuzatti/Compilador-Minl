@@ -6,6 +6,7 @@
 #include <stdio.h>
 #include <string.h>
 #include "floresta.h"
+#include "procedimentos.h"
 
 void yyerror (char const *s);
 int yylex();
@@ -20,6 +21,8 @@ int yylex();
 	tipo_lista_comandos * lista_comandos;
 	char * ident;
 	tipo_lista_identificadores * lista_identificadores;
+	tipo_param * param;
+	tipo_lista_param * lista_param;
 };
 %error-verbose
 
@@ -84,17 +87,22 @@ int yylex();
 %type <lista_comandos> expr_list
 %type <lista_comandos> write_stmt
 %type <lista_comandos> while_stmt
+%type <lista_comandos> proc_decl
 %type <ident> identifier
 %type <ident> variable
 %type <lista_identificadores> ident_list
-%type <unsig_int> decl
+%type <lista_comandos> decl
 %type <unsig_int> variable_decl
-%type <unsig_int> decl_list
+%type <lista_comandos> decl_list
 %type <unsig_int> simple_type
 %type <unsig_int> type
 %type <unsig_int> integer_constant
 %type <unsig_int> boolean_constant
+%type <unsig_int> parameter_type
 %type <unsig_real> real_constant
+%type <param> parameter_decl
+%type <lista_param> formal_list
+%type <lista_param> proc_header
 
 %%
 
@@ -104,16 +112,16 @@ program: PROGRAM identifier proc_body ENDPROGRAM	{program($3);}
 proc_body: block_stmt								{$$ = $1}
 ;
 
-block_stmt: DECLARE decl_list DO stmt_list END		{$$ = $4; $$->num_decl = $2}
-	| DO stmt_list END								{$$ = $2; $$->num_decl = 0}
+block_stmt: DECLARE decl_list DO stmt_list END		{$$ = concatena_listas_comandos($2, $4);}
+	| DO stmt_list END								{$$ = $2}
 ;
 
 decl_list: decl ';'									{$$ = $1}
-	| decl_list decl ';'							{$$ = $1 + $2}
+	| decl_list decl ';'							{$$ = concatena_listas_comandos($1, $2);}
 ;
 
-decl: variable_decl									{$$ = $1}
-	| proc_decl										{$$ = 0}
+decl: variable_decl									{$$ = decl1($1);}
+	| proc_decl										{$$ = $1}
 ;
 
 variable_decl: type ident_list						{$$ = variable_decl($1, $2);}
@@ -140,21 +148,21 @@ array_type: ARRAY tamanho OF simple_type
 tamanho: INTEGER_CONST
 ;
 
-proc_decl: proc_header block_stmt
+proc_decl: proc_header proc_body					{$$ = proc_decl($1, $2);}
 ;
 
-proc_header: PROCEDURE identifier '(' formal_list ')'
+proc_header: PROCEDURE identifier '(' formal_list ')'	{$$ = $4; $$->endereco = proc_header($2, $4);}
 ;
 
-formal_list: parameter_decl ';'
-	| formal_list parameter_decl ';'
+formal_list: parameter_decl ';'						{$$ = formal_list1($1);}
+	| formal_list parameter_decl ';'				{$$ = insere_param($1, $2);}
 ;
 
-parameter_decl: parameter_type identifier
+parameter_decl: parameter_type identifier			{$$ = cria_param($1, $2);}
 ;
 
-parameter_type: type
-	| proc_signature
+parameter_type: type								{$$ = $1}
+	| proc_signature								{$$ = 5}
 ;
 
 proc_signature: PROCEDURE identifier '(' type_list ')'

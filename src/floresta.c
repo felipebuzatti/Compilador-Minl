@@ -2,6 +2,7 @@
 #include <stdlib.h> //malloc, exit
 #include <string.h> //strcmp
 #include <stdio.h> //fprintf
+#include "procedimentos.h"
 
 void inicializa_tabela_simbolos(tipo_floresta * floresta){
 	floresta->primeiro = NULL;
@@ -74,7 +75,14 @@ tipo_simbolo * cria_simbolo(char lexema[MAX_NOME_SIMBOLO], void * valor, int end
 
 void libera_simbolo(tipo_simbolo * simbolo){
 	if (simbolo->valor != NULL)
-		free(simbolo->valor);
+	{
+		if (simbolo->tipo == 5)
+		{
+			libera_lista_param((tipo_lista_param *)simbolo->valor);
+		}
+		else
+			free(simbolo->valor);
+	}
 	free(simbolo);
 }
 
