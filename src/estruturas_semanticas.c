@@ -6,6 +6,8 @@
 
 extern tipo_floresta * tab_simbolos;
 
+extern int nivel_processo;
+
 void program(tipo_lista_comandos * lista_comandos)
 {
 	printf("INPP\n");
@@ -109,7 +111,7 @@ tipo_lista_comandos * read_stmt(tipo_lista_identificadores * lista_identificador
 		sprintf(nome_comando, "LEIT");
 		insere_comando(lista_comandos, nome_comando);
 		
-		sprintf(nome_comando, "ARMZ 0 %d", aux_simb->endereco);
+		sprintf(nome_comando, "ARMZ %d %d", nivel_processo, aux_simb->endereco);
 		insere_comando(lista_comandos, nome_comando);
 		
 		aux = aux->prox;
@@ -125,7 +127,7 @@ tipo_lista_comandos * factor1(char * identificador)
 	tipo_simbolo * aux_simb = recupera_simbolo(tab_simbolos, identificador);
 	
 	char nome_comando[TAM_COM];
-	sprintf(nome_comando, "CRVL 0 %d", aux_simb->endereco);
+	sprintf(nome_comando, "CRVL %d %d", nivel_processo, aux_simb->endereco);
 	insere_comando(lista_comandos, nome_comando);
 	seta_tipo_lista(lista_comandos, aux_simb->tipo);
 	
@@ -226,7 +228,7 @@ tipo_lista_comandos * assign_stmt(char * identificador, tipo_lista_comandos * li
 	}
 
 	char nome_comando[TAM_COM];
-	sprintf(nome_comando, "ARMZ 0 %d", simbolo->endereco);
+	sprintf(nome_comando, "ARMZ %d %d", nivel_processo, simbolo->endereco);
 	insere_comando(lista_comandos, nome_comando);
 
 	return lista_comandos;

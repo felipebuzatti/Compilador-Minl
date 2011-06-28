@@ -87,6 +87,7 @@ int yylex();
 %type <lista_comandos> write_stmt
 %type <lista_comandos> while_stmt
 %type <lista_comandos> proc_decl
+%type <lista_comandos> proc_stmt
 %type <ident> identifier
 %type <ident> variable
 %type <lista_identificadores> ident_list
@@ -190,7 +191,7 @@ unlabelled_stmt: assign_stmt 					{$$ = $1}
 	| read_stmt 								{$$ = $1}
 	| write_stmt 								{$$ = $1}
 	| goto_stmt 								{$$ = NULL}
-	| proc_stmt 								{$$ = NULL}
+	| proc_stmt 								{$$ = $1}
 	| return_stmt								{$$ = NULL} 
 	| block_stmt								{$$ = NULL}
 ;
@@ -224,8 +225,8 @@ write_stmt: WRITE '(' expr_list ')'					{$$ = write_stmt($3);}
 goto_stmt: GOTO label
 ;
 
-proc_stmt: identifier
-	| identifier '(' expr_list ')'
+proc_stmt: identifier				{$$ = proc_stmt1($1);}
+	| identifier '(' expr_list ')'	{$$ = proc_stmt2($1, $3);}
 ;
 
 return_stmt: RETURN

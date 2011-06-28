@@ -63,10 +63,10 @@ void libera_arvore(tipo_arvore * arvore){
 	free(arvore);
 }
 
-tipo_simbolo * cria_simbolo(char lexema[MAX_NOME_SIMBOLO], void * valor, int endereco, int tipo){
+tipo_simbolo * cria_simbolo(char lexema[MAX_NOME_SIMBOLO], int num_param, int endereco, int tipo){
 	tipo_simbolo * aux = malloc(sizeof(tipo_simbolo));
 	strcpy(aux->lexema, lexema);
-	aux->valor = valor;
+	aux->num_param = num_param;
 	aux->endereco = endereco;
 	aux->tipo = tipo;
 	
@@ -74,15 +74,6 @@ tipo_simbolo * cria_simbolo(char lexema[MAX_NOME_SIMBOLO], void * valor, int end
 }
 
 void libera_simbolo(tipo_simbolo * simbolo){
-	if (simbolo->valor != NULL)
-	{
-		if (simbolo->tipo == 5)
-		{
-			libera_lista_param((tipo_lista_param *)simbolo->valor);
-		}
-		else
-			free(simbolo->valor);
-	}
 	free(simbolo);
 }
 

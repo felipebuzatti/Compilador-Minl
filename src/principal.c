@@ -9,6 +9,8 @@ tipo_entr_hash ** tabela;
 
 tipo_floresta * tab_simbolos;
 
+int nivel_processo = 0;
+
 int main (int argc, char *argv[]){
 	if (argc > 1){
 		freopen(argv[1], "r", stdin);

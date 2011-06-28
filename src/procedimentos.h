@@ -28,6 +28,8 @@ void libera_lista_param(tipo_lista_param * lista_param);
 
 tipo_lista_param * formal_list1(tipo_param * param);
 int proc_header(char * nome_proc, tipo_lista_param * lista_param);
+tipo_lista_comandos * proc_stmt1(char * identificador);
+tipo_lista_comandos * proc_stmt2(char * identificador, tipo_lista_comandos * lista_comandos);
 tipo_lista_comandos * proc_decl(tipo_lista_param * lista_param, tipo_lista_comandos * comandos_proc);
 
 

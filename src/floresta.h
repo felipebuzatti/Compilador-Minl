@@ -3,12 +3,15 @@
 
 #define MAX_NOME_SIMBOLO 100
 
+#include "procedimentos.h"
+
+
 
 typedef struct{
 	char lexema[MAX_NOME_SIMBOLO];
 	int endereco;
 	int tipo; //INTEGER = 0; REAL=1; BOOLEAN=2; CHAR=3; LABEL=4; PROCEDURE=5
-	void * valor;
+	int num_param;
 } tipo_simbolo;
 
 typedef struct tipo_no_arvore_str{
@@ -38,7 +41,7 @@ typedef struct{
 void inicializa_tabela_simbolos(tipo_floresta * floresta);
 void insere_nivel(tipo_floresta * floresta);
 void remove_nivel(tipo_floresta * floresta);
-tipo_simbolo * cria_simbolo(char lexema[MAX_NOME_SIMBOLO], void * valor, int endereco, int tipo);
+tipo_simbolo * cria_simbolo(char lexema[MAX_NOME_SIMBOLO], int num_param, int endereco, int tipo);
 void libera_simbolo(tipo_simbolo * simbolo);
 void instala_simbolo(tipo_floresta * floresta, tipo_simbolo * simbolo);
 tipo_simbolo * recupera_simbolo(tipo_floresta * floresta, char * lexema);

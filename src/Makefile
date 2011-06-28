@@ -39,6 +39,7 @@ parser.tab.o: parser.tab.c parser.tab.h
 clean:
 	$(RM) $(MAIN) *.o
 	$(RM) parser.tab.h parser.tab.c
+	$(RM) *~
 	clear
 
 run: $(MAIN)

@@ -7,6 +7,8 @@
 
 extern tipo_floresta * tab_simbolos;
 
+extern int nivel_processo;
+
 tipo_param * cria_param(int tipo, char * nome)
 {
 	tipo_param * param = (tipo_param*)malloc(sizeof(tipo_param));
@@ -66,16 +68,17 @@ int proc_header(char * nome_proc, tipo_lista_param * lista_param)
 {
 	static int end_valido = 0;
 	
-	tipo_simbolo * simb_proc = cria_simbolo(nome_proc, (void*)lista_param, end_valido, 5);
+	tipo_simbolo * simb_proc = cria_simbolo(nome_proc, lista_param->num_param, end_valido, 5);
 	instala_simbolo(tab_simbolos, simb_proc);
 	
 	insere_nivel(tab_simbolos);
+	nivel_processo+=1;
 	
 	tipo_param * aux = lista_param->primeiro;
 	int i = 0;
 	while (aux != NULL)
 	{
-		tipo_simbolo * simb_param = cria_simbolo(aux->nome, NULL, (-(lista_param->num_param+4)+i), aux->tipo);
+		tipo_simbolo * simb_param = cria_simbolo(aux->nome, 0, (-(lista_param->num_param+4)+i), aux->tipo);
 		instala_simbolo(tab_simbolos, simb_param);
 		
 		i+=1;
@@ -83,6 +86,70 @@ int proc_header(char * nome_proc, tipo_lista_param * lista_param)
 	}
 	
 	return end_valido++;
+}
+
+tipo_lista_comandos * proc_stmt1(char * identificador)
+{
+	tipo_simbolo * simbolo_processo = recupera_simbolo(tab_simbolos, identificador);
+	if (simbolo_processo->num_param != 0)
+	{
+		fprintf(stderr, "\nERRO! Processo %s chamado sem parâmetros\n\n", identificador);
+		exit(0);
+	}
+	
+	tipo_lista_comandos * lista_comandos = inicializa_lista_comandos();
+	
+	char nome_comando[TAM_COM];
+	
+	sprintf(nome_comando, "CHPR LIP%d %d", simbolo_processo->endereco, nivel_processo);
+	insere_comando(lista_comandos, nome_comando);
+	
+	return lista_comandos;
+}
+
+tipo_lista_comandos * proc_stmt2(char * identificador, tipo_lista_comandos * lista_comandos)
+{
+	tipo_simbolo * simbolo_processo = recupera_simbolo(tab_simbolos, identificador);
+	
+	int num_param_chamados = 0;
+	tipo_comando * aux = lista_comandos->primeiro;
+	
+	while (aux->prox != NULL)
+	{
+		if (strcmp(aux->prox->nome, "BRANCO") == 0)
+		{
+			num_param_chamados+=1;
+			if (aux->prox == lista_comandos->ultimo)
+			{
+				lista_comandos->ultimo = aux;
+				free(aux->prox);
+				aux->prox = NULL;
+			}
+			else{
+				if (aux->prox == lista_comandos->primeiro)
+					lista_comandos->primeiro = aux->prox;
+				
+				tipo_comando * aux_libera = aux->prox;
+				aux->prox = aux->prox->prox;
+				free(aux_libera);
+			}
+		}
+		else
+			aux = aux->prox;
+	}
+	
+	if (num_param_chamados != simbolo_processo->num_param)
+	{
+		fprintf(stderr, "\nNúmero de parâmetros na chamada do processo %s incompatível\n\n", identificador);
+		exit(0);
+	}
+	
+	char nome_comando[TAM_COM];
+	
+	sprintf(nome_comando, "CHPR LIP%d %d", simbolo_processo->endereco, nivel_processo);
+	insere_comando(lista_comandos, nome_comando);
+	
+	return lista_comandos;
 }
 
 tipo_lista_comandos * proc_decl(tipo_lista_param * lista_param, tipo_lista_comandos * comandos_proc)
@@ -102,7 +169,7 @@ tipo_lista_comandos * proc_decl(tipo_lista_param * lista_param, tipo_lista_coman
 	comando_dsvs->prox = comandos_proc->primeiro;
 	comandos_proc->primeiro = comando_dsvs;
 	
-	sprintf(nome_comando, "RTPR %d:", lista_param->num_param);
+	sprintf(nome_comando, "RTPR %d", lista_param->num_param);
 	insere_comando(comandos_proc, nome_comando);
 	
 	sprintf(nome_comando, "LFP%d:", lista_param->endereco);
@@ -110,6 +177,7 @@ tipo_lista_comandos * proc_decl(tipo_lista_param * lista_param, tipo_lista_coman
 	
 
 	remove_nivel(tab_simbolos);
+	nivel_processo-=1;
 	
 	return comandos_proc;
 }
