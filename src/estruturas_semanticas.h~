@@ -16,7 +16,7 @@ typedef struct
 	tipo_comando * primeiro;
 	tipo_comando * ultimo;
 	int num_decl;
-	int tipo; //0 para int, 1 para real, 2 para bol
+	int tipo; //0 para int, 1 para real, 2 para bol, 3 para char
 } tipo_lista_comandos;
 
 typedef struct str_identificador
@@ -34,6 +34,7 @@ typedef struct
 //////////////////////////////////////////////////////////////////////////////
 
 void program();
+tipo_lista_comandos * decl1(int num_decl);
 tipo_lista_comandos * stmt_list(tipo_lista_comandos * lista1, tipo_lista_comandos * lista2);
 tipo_lista_identificadores * ident_list1(char * identificador);
 tipo_lista_identificadores * ident_list2(tipo_lista_identificadores * lista_identificadores, char * identificador);
@@ -48,11 +49,12 @@ tipo_lista_comandos * expr_bool_and2(tipo_lista_comandos * lista1, tipo_lista_co
 tipo_lista_comandos * simple_expr2(tipo_lista_comandos * lista1, tipo_lista_comandos * lista2);
 tipo_lista_comandos * expr_boolean2(tipo_lista_comandos * lista1, tipo_lista_comandos * lista2);
 tipo_lista_comandos * assign_stmt(char * identificador, tipo_lista_comandos * lista_comandos);
-tipo_lista_comandos * constant1(int const_int);
-tipo_lista_comandos * constant2(float const_real);
+tipo_lista_comandos * constant1(int const_int);//int
+tipo_lista_comandos * constant2(float const_real);//real
+tipo_lista_comandos * constant3(int const_int);//bool
+tipo_lista_comandos * constant4(int const_int);//char
 int relop(int tipo_rel);
-tipo_lista_comandos * expression2(tipo_lista_comandos * lista_esq, int tipo_rel, 
-									tipo_lista_comandos * lista_dir);
+tipo_lista_comandos * expression2(tipo_lista_comandos * lista_esq, int tipo_rel, tipo_lista_comandos * lista_dir);
 tipo_lista_comandos * if_stmt1(tipo_lista_comandos * lista_condition, tipo_lista_comandos * lista_then);
 tipo_lista_comandos * if_stmt2(tipo_lista_comandos * lista_condition, tipo_lista_comandos * lista_then,
 								tipo_lista_comandos * lista_else);

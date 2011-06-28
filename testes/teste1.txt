@@ -3,9 +3,11 @@ declare
 	integer a,b;
 	real Felipe;
 	boolean c;
+	char d;
 do
 	a := 1;
 	b := 2;
-	Felipe := 10.2;
-	Felipe := a*b;
+	Felipe := 1.0;
+	write(a,b);
+	write(Felipe);
 end

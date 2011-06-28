@@ -64,7 +64,6 @@ int yylex();
 %token <unsig_real> UNSIG_REAL
 %token <identificador> IDENT
 %token <char_const> CHAR_CONST
-
 %type <lista_comandos> proc_body
 %type <lista_comandos> block_stmt
 %type <lista_comandos> stmt_list
@@ -100,6 +99,7 @@ int yylex();
 %type <unsig_int> boolean_constant
 %type <unsig_int> parameter_type
 %type <unsig_real> real_constant
+%type <char_const> char_constant
 %type <param> parameter_decl
 %type <lista_param> formal_list
 %type <lista_param> proc_header
@@ -135,7 +135,7 @@ type: simple_type									{$$ = $1}
 	| array_type									{$$ = 0}
 ;
 
-simple_type: INTEGER 								{$$ = 0}
+simple_type: INTEGER 										{$$ = 0}
 	| REAL 											{$$ = 1}
 	| BOOLEAN 										{$$ = 2}
 	| CHAR 											{$$ = 3}
@@ -161,7 +161,7 @@ formal_list: parameter_decl ';'						{$$ = formal_list1($1);}
 parameter_decl: parameter_type identifier			{$$ = cria_param($1, $2);}
 ;
 
-parameter_type: type								{$$ = $1}
+parameter_type: type									{$$ = $1}
 	| proc_signature								{$$ = 5}
 ;
 
@@ -275,9 +275,9 @@ relop: EQ 					{$$ = relop(0);}
 	| DIF 					{$$ = relop(3);}
 ;
 
-constant: integer_constant	{$$ = constant1($1);}
+constant: integer_constant		{$$ = constant1($1);}
 	| real_constant 		{$$ = constant2($1);}
-	| char_constant 		{$$ = NULL}
+	| char_constant 		{$$ = constant4($1);}
 	| boolean_constant		{$$ = constant3($1);}
 ;
 
@@ -288,10 +288,10 @@ boolean_constant: BOOL_CONST_T	{$$ = 1}
 integer_constant: UNSIG_INT	{$$ = $1}
 ;
 
-char_constant: CHAR_CONST
+char_constant: CHAR_CONST	{$$ = $1}
 ;
 
-real_constant: UNSIG_REAL {$$ = $1}
+real_constant: UNSIG_REAL	{$$ = $1}
 ;
 
 identifier: IDENT			{$$ = identifier($1);}

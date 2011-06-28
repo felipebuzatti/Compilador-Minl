@@ -1,10 +1,14 @@
 program teste1
 declare 
 	integer a,b;
+	real Felipe;
 	boolean c;
+	char d;
 do
 	a := 1;
 	b := 2;
-	c := a < b;
-
+	Felipe := 1.0;
+	d := f;
+	write(a,b);
+	write(Felipe);
 end

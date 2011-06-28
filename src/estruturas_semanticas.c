@@ -232,7 +232,7 @@ tipo_lista_comandos * assign_stmt(char * identificador, tipo_lista_comandos * li
 	return lista_comandos;
 }
 
-tipo_lista_comandos * constant1(int const_int)
+tipo_lista_comandos * constant1(int const_int) //int
 {
 	tipo_lista_comandos * lista_comandos = inicializa_lista_comandos();
 	
@@ -244,7 +244,7 @@ tipo_lista_comandos * constant1(int const_int)
 	return lista_comandos;
 }
 
-tipo_lista_comandos * constant2(float const_real)
+tipo_lista_comandos * constant2(float const_real)//real
 {
 	tipo_lista_comandos * lista_comandos = inicializa_lista_comandos();
 	
@@ -256,13 +256,25 @@ tipo_lista_comandos * constant2(float const_real)
 	return lista_comandos;
 }
 
-tipo_lista_comandos * constant3(int const_int)
+tipo_lista_comandos * constant3(int const_int)//bool
 {
 	tipo_lista_comandos * lista_comandos = inicializa_lista_comandos();
 	
 	char nome_comando[TAM_COM];
 	sprintf(nome_comando, "CRCT %d", const_int);
 	seta_tipo_lista(lista_comandos, 2);
+	insere_comando(lista_comandos, nome_comando);
+	
+	return lista_comandos;
+}
+
+tipo_lista_comandos * constant4(char const_int)//char
+{
+	tipo_lista_comandos * lista_comandos = inicializa_lista_comandos();
+	
+	char nome_comando[TAM_COM];
+	sprintf(nome_comando, "CRCT %d", const_int);
+	seta_tipo_lista(lista_comandos, 3);
 	insere_comando(lista_comandos, nome_comando);
 	
 	return lista_comandos;
@@ -379,7 +391,22 @@ tipo_lista_comandos * write_stmt(tipo_lista_comandos * lista_comandos)
 		if (strcmp(aux->nome, "BRANCO") == 0)
 		{
 			char nome_comando[TAM_COM];
-			sprintf(nome_comando, "IMPR");
+			switch(lista_comandos->tipo)
+			{
+				case 0: //int
+				  sprintf(nome_comando, "IMPR"); 
+				  break;
+				case 1: //real
+				  sprintf(nome_comando, "IMPF"); 
+				  break;
+				case 2: //bool
+				  sprintf(nome_comando, "IMPR"); 
+				  break;
+				case 3: //char
+				  sprintf(nome_comando, "IMPC"); 
+				  break;			
+			}
+			  
 			strcpy(aux->nome, nome_comando);
 		}
 		aux = aux->prox;

@@ -6,6 +6,7 @@
 #include <stdio.h>
 #include <string.h>
 #include "floresta.h"
+#include "procedimentos.h"
 
 void yyerror (char const *s);
 int yylex();
@@ -20,6 +21,8 @@ int yylex();
 	tipo_lista_comandos * lista_comandos;
 	char * ident;
 	tipo_lista_identificadores * lista_identificadores;
+	tipo_param * param;
+	tipo_lista_param * lista_param;
 };
 %error-verbose
 
@@ -61,7 +64,6 @@ int yylex();
 %token <unsig_real> UNSIG_REAL
 %token <identificador> IDENT
 %token <char_const> CHAR_CONST
-
 %type <lista_comandos> proc_body
 %type <lista_comandos> block_stmt
 %type <lista_comandos> stmt_list
@@ -78,23 +80,29 @@ int yylex();
 %type <lista_comandos> expr_bool_not
 %type <lista_comandos> assign_stmt
 %type <lista_comandos> constant
-%type <int> relop
+%type <unsig_int> relop
 %type <lista_comandos> if_stmt
 %type <lista_comandos> condition
 %type <lista_comandos> expr_list
 %type <lista_comandos> write_stmt
 %type <lista_comandos> while_stmt
+%type <lista_comandos> proc_decl
 %type <ident> identifier
 %type <ident> variable
 %type <lista_identificadores> ident_list
-%type <unsig_int> decl
+%type <lista_comandos> decl
 %type <unsig_int> variable_decl
-%type <unsig_int> decl_list
+%type <lista_comandos> decl_list
 %type <unsig_int> simple_type
 %type <unsig_int> type
 %type <unsig_int> integer_constant
 %type <unsig_int> boolean_constant
+%type <unsig_int> parameter_type
 %type <unsig_real> real_constant
+%type <unsig_int> char_constant
+%type <param> parameter_decl
+%type <lista_param> formal_list
+%type <lista_param> proc_header
 
 %%
 
@@ -104,16 +112,16 @@ program: PROGRAM identifier proc_body ENDPROGRAM	{program($3);}
 proc_body: block_stmt								{$$ = $1}
 ;
 
-block_stmt: DECLARE decl_list DO stmt_list END		{$$ = $4; $$->num_decl = $2}
-	| DO stmt_list END								{$$ = $2; $$->num_decl = 0}
+block_stmt: DECLARE decl_list DO stmt_list END		{$$ = concatena_listas_comandos($2, $4);}
+	| DO stmt_list END								{$$ = $2}
 ;
 
 decl_list: decl ';'									{$$ = $1}
-	| decl_list decl ';'							{$$ = $1 + $2}
+	| decl_list decl ';'							{$$ = concatena_listas_comandos($1, $2);}
 ;
 
-decl: variable_decl									{$$ = $1}
-	| proc_decl										{$$ = 0}
+decl: variable_decl									{$$ = decl1($1);}
+	| proc_decl										{$$ = $1}
 ;
 
 variable_decl: type ident_list						{$$ = variable_decl($1, $2);}
@@ -127,7 +135,7 @@ type: simple_type									{$$ = $1}
 	| array_type									{$$ = 0}
 ;
 
-simple_type: INTEGER 								{$$ = 0}
+simple_type: INTEGER 										{$$ = 0}
 	| REAL 											{$$ = 1}
 	| BOOLEAN 										{$$ = 2}
 	| CHAR 											{$$ = 3}
@@ -140,21 +148,21 @@ array_type: ARRAY tamanho OF simple_type
 tamanho: INTEGER_CONST
 ;
 
-proc_decl: proc_header block_stmt
+proc_decl: proc_header proc_body					{$$ = proc_decl($1, $2);}
 ;
 
-proc_header: PROCEDURE identifier '(' formal_list ')'
+proc_header: PROCEDURE identifier '(' formal_list ')'	{$$ = $4; $$->endereco = proc_header($2, $4);}
 ;
 
-formal_list: parameter_decl ';'
-	| formal_list parameter_decl ';'
+formal_list: parameter_decl ';'						{$$ = formal_list1($1);}
+	| formal_list parameter_decl ';'				{$$ = insere_param($1, $2);}
 ;
 
-parameter_decl: parameter_type identifier
+parameter_decl: parameter_type identifier			{$$ = cria_param($1, $2);}
 ;
 
-parameter_type: type
-	| proc_signature
+parameter_type: type									{$$ = $1}
+	| proc_signature								{$$ = 5}
 ;
 
 proc_signature: PROCEDURE identifier '(' type_list ')'
@@ -267,10 +275,10 @@ relop: EQ 					{$$ = relop(0);}
 	| DIF 					{$$ = relop(3);}
 ;
 
-constant: integer_constant	{$$ = constant1($1);}
+constant: integer_constant		{$$ = constant1($1);}
 	| real_constant 		{$$ = constant2($1);}
-	| char_constant 		{$$ = NULL}
-	| boolean_constant		{$$ = constant1($1);}
+	| char_constant 		{$$ = constant4($1);}
+	| boolean_constant		{$$ = constant3($1);}
 ;
 
 boolean_constant: BOOL_CONST_T	{$$ = 1}
@@ -280,10 +288,10 @@ boolean_constant: BOOL_CONST_T	{$$ = 1}
 integer_constant: UNSIG_INT	{$$ = $1}
 ;
 
-char_constant: CHAR_CONST
+char_constant: CHAR_CONST	{$$ = $1}
 ;
 
-real_constant: UNSIG_REAL {$$ = $1}
+real_constant: UNSIG_REAL	{$$ = $1}
 ;
 
 identifier: IDENT			{$$ = identifier($1);}
@@ -312,10 +320,25 @@ int yylex(){
 		
 
 	if (item_aux->value != NULL){
-		if (item_aux->token == UNSIG_REAL)
-		  memcpy(&yylval, item_aux->value, sizeof(float));
+		if (item_aux->token == UNSIG_REAL){
+			float * valor = (float*)item_aux->value;
+			yylval.unsig_real = *valor;
+		}
+		else if (item_aux->token == IDENT)
+		{
+			char * valor = (char*)item_aux->value;
+			strcpy(yylval.identificador, valor);
+		}
+		else if (item_aux->token == UNSIG_INT)
+		{
+			int * valor = (int*)item_aux->value;
+			yylval.unsig_int = *valor;
+		}
 		else
-		  memcpy(&yylval, item_aux->value, sizeof(*item_aux->value));
+		{
+			char * valor = (char*)item_aux->value;
+			yylval.char_const = *valor;
+		}
 	}
 	
 	item_cabeca = item_aux;
