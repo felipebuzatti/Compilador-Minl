@@ -56,7 +56,7 @@ int variable_decl(int tipo, tipo_lista_identificadores * lista_identificadores)
 	{	
 		tipo_simbolo *verifica = recupera_simbolo(tab_simbolos, aux->nome);
 		if (verifica == NULL){ 
-		  tipo_simbolo * aux_simb = cria_simbolo(aux->nome, NULL, valor_valido++, tipo);
+		  tipo_simbolo * aux_simb = cria_simbolo(aux->nome, 0, valor_valido++, tipo);
 		  instala_simbolo(tab_simbolos, aux_simb);		
 		  num_ids+=1;
 		}
