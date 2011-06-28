@@ -19,6 +19,7 @@ uma quebra de linha, e 0 quando encontra final do arquivo.
 int analise_lex(FILE * arquivo, item_lex * tokens);
 item_lex * exporta_buffer(char buffer[TAM_BUFFER_ENTR], int * ind_buffer, flag tipo);
 item_lex * exporta_simbolo(char valor);
+item_lex * exporta_char(char valor);
 item_lex * exporta_buffer_esp(char valor[TAM_BUFFER_ESP], int cod_token);
 
 //========HASH palavras reservadas=======//

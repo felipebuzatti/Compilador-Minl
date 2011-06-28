@@ -251,7 +251,7 @@ tipo_lista_comandos * constant2(float const_real)//real
 	tipo_lista_comandos * lista_comandos = inicializa_lista_comandos();
 	
 	char nome_comando[TAM_COM];
-	sprintf(nome_comando, "CRCF %.2f", const_real);
+	sprintf(nome_comando, "CRCF %f", const_real);
 	seta_tipo_lista(lista_comandos, 1);
 	insere_comando(lista_comandos, nome_comando);
 	
@@ -552,14 +552,7 @@ void libera_lista_identificadores(tipo_lista_identificadores * lista_identificad
 
 void seta_tipo_lista(tipo_lista_comandos * lista, int tipo)
 {
-    if (tipo == 0)// int
-      lista->tipo = 0;
-    else{
-      if (tipo == 1) // real
-	lista->tipo = 1;
-      else if (tipo == 2) // bol
-	lista->tipo = 2;
-    }
+    lista->tipo = tipo;
     return;
 }
  

@@ -7,7 +7,9 @@ declare
 do
 	a := 1;
 	b := 2;
-	Felipe := 1.0;
+	d := 'e';
+	Felipe := 1.1;
 	write(a,b);
+	write(d);
 	write(Felipe);
 end

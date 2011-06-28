@@ -50,15 +50,6 @@ int analise_lex(FILE * arquivo, item_lex * tokens){
 				tokens->prox = exporta_simbolo(c);
 				tokens = tokens->prox;
 				break;
-			case '\'':
-				tokens->prox = exporta_buffer(buffer, &ind_buffer, tipo);
-				if (tokens->prox != NULL)
-					tokens = tokens->prox;
-				c = fgetc(arquivo);
-				tokens->prox = exporta_simbolo(c);
-				tokens = tokens->prox;
-				c = fgetc(arquivo);
-				break;
 			case '(':
 			case ')':
 				tokens->prox = exporta_buffer(buffer, &ind_buffer, tipo);
@@ -83,6 +74,20 @@ int analise_lex(FILE * arquivo, item_lex * tokens){
 					tokens = tokens->prox;
 				tokens->prox = exporta_simbolo(c);
 				tokens = tokens->prox;
+				break;
+			case '\'':
+				tokens->prox = exporta_buffer(buffer, &ind_buffer, tipo);
+				c = fgetc(arquivo);
+				if (tokens->prox != NULL)
+					tokens = tokens->prox;
+				tokens->prox = exporta_char(c);
+				char char_lido = c;
+				tokens = tokens->prox;
+				if ((c = fgetc(arquivo)) != '\'')
+				{
+					fprintf(stderr, "\nERRO: Esperado caractere ''' após %c\n\n", char_lido);
+					exit(0);
+				}
 				break;
 			case ';':
 				tokens->prox = exporta_buffer(buffer, &ind_buffer, tipo);
@@ -178,7 +183,7 @@ int analise_lex(FILE * arquivo, item_lex * tokens){
 				if (isalnum(c) || (!EH_NUMERO  && c == '_')){
 					buffer[ind_buffer++] = c; //lê para buffer
 				} else{
-					fprintf(stderr, "\nErro: caractere %c não reconhecido\n", c);
+					fprintf(stderr, "\nErro: caractere %c não reconhecido\n\n", c);
 					exit(1);
 				}
 				break;
@@ -232,6 +237,16 @@ item_lex * exporta_simbolo(char valor){
 	item_lex * aux_item = (item_lex*)malloc(sizeof(item_lex));
 	aux_item->token = valor;
 	aux_item->value = NULL;
+	aux_item->prox = NULL;
+	return aux_item;
+}
+
+item_lex * exporta_char(char valor)
+{
+	item_lex * aux_item = (item_lex*)malloc(sizeof(item_lex));
+	aux_item->token = CHAR_CONST;
+	aux_item->value = (char*)malloc(sizeof(char));
+	memcpy(aux_item->value, &valor, sizeof(char));
 	aux_item->prox = NULL;
 	return aux_item;
 }

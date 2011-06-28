@@ -310,13 +310,16 @@ int yylex(){
 	}
 	
 	item_lex * item_aux = item_cabeca->prox;
-
-	if(item_aux == NULL && analise_lex(stdin, item_cabeca) == 0)
-		return ENDPROGRAM;
+	
+	do
+	{
+		if(item_aux == NULL && analise_lex(stdin, item_cabeca) == 0)
+			return ENDPROGRAM;
+		linha+=1;
+	} while (item_cabeca->prox == NULL);
 
 	if(item_aux == NULL){
 		item_aux = item_cabeca->prox;
-		linha += 1;
 	}
 		
 

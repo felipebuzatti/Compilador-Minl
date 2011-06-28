@@ -7,7 +7,7 @@ BIN_COMP = compilador.elf
 BIN_MEPA = MEPA.elf
 
 EXEMPLO = testes/teste1.txt
-SAIDA_EXEMPLO = saida1.txt
+SAIDA_EXEMPLO = saida.txt
 
 
 # =============
