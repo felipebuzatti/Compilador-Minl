@@ -1,7 +1,7 @@
 CC = g++
 
 MODULES = main.o mepa.o program.o
-BIN_MEPA = MEPA.elf
+BIN_MEPA = ../MEPA.elf
 
 CFLAGS = -Wall -g3
 
@@ -27,4 +27,4 @@ main.o: main.cpp
 	@$(CC) $(CFLAGS) $< -c 
 
 clean:
-	rm -rf *.o ./../$(BIN_MEPA) *~
+	rm -rf *.o $(BIN_MEPA) *~

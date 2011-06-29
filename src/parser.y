@@ -23,6 +23,7 @@ int yylex();
 	tipo_lista_identificadores * lista_identificadores;
 	tipo_param * param;
 	tipo_lista_param * lista_param;
+	tipo_lista_lista_comandos * lista_lista_comandos;
 };
 %error-verbose
 
@@ -83,7 +84,7 @@ int yylex();
 %type <unsig_int> relop
 %type <lista_comandos> if_stmt
 %type <lista_comandos> condition
-%type <lista_comandos> expr_list
+%type <lista_lista_comandos> expr_list
 %type <lista_comandos> write_stmt
 %type <lista_comandos> while_stmt
 %type <lista_comandos> proc_decl

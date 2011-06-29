@@ -107,35 +107,26 @@ tipo_lista_comandos * proc_stmt1(char * identificador)
 	return lista_comandos;
 }
 
-tipo_lista_comandos * proc_stmt2(char * identificador, tipo_lista_comandos * lista_comandos)
+tipo_lista_comandos * proc_stmt2(char * identificador, tipo_lista_lista_comandos * lista_lista_comandos)
 {
 	tipo_simbolo * simbolo_processo = recupera_simbolo(tab_simbolos, identificador);
 	
 	int num_param_chamados = 0;
-	tipo_comando * aux = lista_comandos->primeiro;
+	tipo_lista_comandos * lista_retorno = NULL;
+	tipo_lista_comandos * aux = lista_lista_comandos->primeiro;
 	
-	while (aux->prox != NULL)
+	while (aux != NULL)
 	{
-		if (strcmp(aux->prox->nome, "BRANCO") == 0)
+		if (lista_retorno == NULL)
 		{
-			num_param_chamados+=1;
-			if (aux->prox == lista_comandos->ultimo)
-			{
-				lista_comandos->ultimo = aux;
-				free(aux->prox);
-				aux->prox = NULL;
-			}
-			else{
-				if (aux->prox == lista_comandos->primeiro)
-					lista_comandos->primeiro = aux->prox;
-				
-				tipo_comando * aux_libera = aux->prox;
-				aux->prox = aux->prox->prox;
-				free(aux_libera);
-			}
+			lista_retorno = aux;
 		}
 		else
-			aux = aux->prox;
+		{
+			concatena_listas_comandos(lista_retorno, aux);
+		}
+		num_param_chamados+=1;
+		aux = aux->prox;
 	}
 	
 	if (num_param_chamados != simbolo_processo->num_param)
@@ -147,9 +138,9 @@ tipo_lista_comandos * proc_stmt2(char * identificador, tipo_lista_comandos * lis
 	char nome_comando[TAM_COM];
 	
 	sprintf(nome_comando, "CHPR LIP%d %d", simbolo_processo->endereco, nivel_processo);
-	insere_comando(lista_comandos, nome_comando);
+	insere_comando(lista_retorno, nome_comando);
 	
-	return lista_comandos;
+	return lista_retorno;
 }
 
 tipo_lista_comandos * proc_decl(tipo_lista_param * lista_param, tipo_lista_comandos * comandos_proc)

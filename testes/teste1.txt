@@ -9,7 +9,5 @@ do
 	b := 2;
 	d := 'e';
 	Felipe := 1.1;
-	write(a,b);
-	write(d);
-	write(Felipe);
+	write(a,b, d, Felipe);
 end

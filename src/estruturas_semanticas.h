@@ -11,13 +11,20 @@ typedef struct str_comando
 	struct str_comando * prox;
 } tipo_comando;
 
-typedef struct
+typedef struct str_lista_comandos
 {
 	tipo_comando * primeiro;
 	tipo_comando * ultimo;
 	int num_decl;
 	int tipo; //0 para int, 1 para real, 2 para bol, 3 para char
+	struct str_lista_comandos * prox;
 } tipo_lista_comandos;
+
+typedef struct 
+{
+	tipo_lista_comandos * primeiro;
+	tipo_lista_comandos * ultimo;
+} tipo_lista_lista_comandos;
 
 typedef struct str_identificador
 {
@@ -58,9 +65,9 @@ tipo_lista_comandos * expression2(tipo_lista_comandos * lista_esq, int tipo_rel,
 tipo_lista_comandos * if_stmt1(tipo_lista_comandos * lista_condition, tipo_lista_comandos * lista_then);
 tipo_lista_comandos * if_stmt2(tipo_lista_comandos * lista_condition, tipo_lista_comandos * lista_then,
 								tipo_lista_comandos * lista_else);
-tipo_lista_comandos * expr_list1(tipo_lista_comandos * lista_expression);
-tipo_lista_comandos * expr_list2(tipo_lista_comandos * expr_list, tipo_lista_comandos * expression);
-tipo_lista_comandos * write_stmt(tipo_lista_comandos * lista_comandos);
+tipo_lista_lista_comandos * expr_list1(tipo_lista_comandos * lista_expression);
+tipo_lista_lista_comandos * expr_list2(tipo_lista_lista_comandos * expr_list, tipo_lista_comandos * expression);
+tipo_lista_comandos * write_stmt(tipo_lista_lista_comandos * lista_lista_comandos);
 tipo_lista_comandos * while_stmt(tipo_lista_comandos * conditions, tipo_lista_comandos * stmts);
 
 //////////////////////////////////////////////////////////////////////////////
@@ -70,6 +77,11 @@ tipo_lista_comandos * concatena_listas_comandos(tipo_lista_comandos * lista1, ti
 void libera_lista_comandos(tipo_lista_comandos * lista_comandos);
 void insere_comando(tipo_lista_comandos * lista_comandos, char nome_comando[]);
 tipo_comando * inicializa_comando(char nome_comando[]);
+
+tipo_lista_lista_comandos * inicializa_lista_lista_comandos();
+void libera_lista_lista_comandos(tipo_lista_lista_comandos * lista_lista_comandos);
+tipo_lista_lista_comandos * concatena_listas_lista_comandos(tipo_lista_lista_comandos * lista1, tipo_lista_lista_comandos * lista2);
+void insere_lista_comandos(tipo_lista_lista_comandos * lista_lista_comandos, tipo_lista_comandos * lista_comandos);
 
 tipo_lista_identificadores * inicializa_lista_identificadores();
 void libera_lista_identificadores(tipo_lista_identificadores * lista_identificadores);

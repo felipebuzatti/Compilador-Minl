@@ -328,6 +328,7 @@ tipo_lista_comandos * expression2(tipo_lista_comandos * lista_esq, int tipo_rel,
 		
 	
 	insere_comando(lista_expressoes, nome_comando);
+	seta_tipo_lista(lista_expressoes, 2);
 	return lista_expressoes;
 }
 
@@ -368,53 +369,58 @@ tipo_lista_comandos * if_stmt2(tipo_lista_comandos * lista_condition, tipo_lista
 	return concatena_listas_comandos(lista1, lista_else);
 }
 
-tipo_lista_comandos * expr_list1(tipo_lista_comandos * lista_expression)
+tipo_lista_lista_comandos * expr_list1(tipo_lista_comandos * lista_expression)
 {
-	char nome_comando[TAM_COM];
-	sprintf(nome_comando, "BRANCO");
-	insere_comando(lista_expression, nome_comando);
-	return lista_expression;
+	tipo_lista_lista_comandos * lista_lista = inicializa_lista_lista_comandos();
+	insere_lista_comandos(lista_lista, lista_expression);
+	return lista_lista;
 }
 
-tipo_lista_comandos * expr_list2(tipo_lista_comandos * expr_list, tipo_lista_comandos * expression)
+tipo_lista_lista_comandos * expr_list2(tipo_lista_lista_comandos * expr_list, tipo_lista_comandos * expression)
 {
-	char nome_comando[TAM_COM];
-	sprintf(nome_comando, "BRANCO");
-	insere_comando(expression, nome_comando);
-	return concatena_listas_comandos(expr_list, expression);
+	insere_lista_comandos(expr_list, expression);
+	return expr_list;
 }
 
-tipo_lista_comandos * write_stmt(tipo_lista_comandos * lista_comandos)
+tipo_lista_comandos * write_stmt(tipo_lista_lista_comandos * lista_lista_comandos)
 {
-	tipo_comando * aux = lista_comandos->primeiro;
+	tipo_lista_comandos * aux = lista_lista_comandos->primeiro;
+	tipo_lista_comandos * lista_retorno = NULL;
+	
+	char nome_comando[TAM_COM];
 	
 	while (aux != NULL)
 	{
-		if (strcmp(aux->nome, "BRANCO") == 0)
+		switch(aux->tipo)
 		{
-			char nome_comando[TAM_COM];
-			switch(lista_comandos->tipo)
-			{
-				case 0: //int
-				  sprintf(nome_comando, "IMPR"); 
-				  break;
-				case 1: //real
-				  sprintf(nome_comando, "IMPF"); 
-				  break;
-				case 2: //bool
-				  sprintf(nome_comando, "IMPR"); 
-				  break;
-				case 3: //char
-				  sprintf(nome_comando, "IMPC"); 
-				  break;			
-			}
-			  
-			strcpy(aux->nome, nome_comando);
+			case 0: //int
+			  sprintf(nome_comando, "IMPR"); 
+			  break;
+			case 1: //real
+			  sprintf(nome_comando, "IMPF"); 
+			  break;
+			case 2: //bool
+			  sprintf(nome_comando, "IMPR"); 
+			  break;
+			case 3: //char
+			  sprintf(nome_comando, "IMPC"); 
+			  break;			
 		}
+		insere_comando(aux, nome_comando);
+	
+		if (lista_retorno == NULL)
+		{
+			lista_retorno = aux;
+		}
+		else
+		{
+			lista_retorno = concatena_listas_comandos(lista_retorno, aux);
+		}
+		
 		aux = aux->prox;
 	}
 	
-	return lista_comandos;
+	return lista_retorno;
 }
 
 tipo_lista_comandos * while_stmt(tipo_lista_comandos * conditions, tipo_lista_comandos * stmts)
@@ -455,6 +461,7 @@ tipo_lista_comandos * inicializa_lista_comandos()
 	lista_comandos->primeiro = NULL;
 	lista_comandos->ultimo = NULL;
 	lista_comandos->num_decl = 0;
+	lista_comandos->prox = NULL;
 	
 	return lista_comandos;
 }
@@ -486,6 +493,50 @@ tipo_lista_comandos * concatena_listas_comandos(tipo_lista_comandos * lista1, ti
 	return lista1;
 }
 
+tipo_lista_lista_comandos * inicializa_lista_lista_comandos()
+{
+	tipo_lista_lista_comandos * lista_lista_comandos = (tipo_lista_lista_comandos *)malloc(sizeof(tipo_lista_lista_comandos));
+	lista_lista_comandos->primeiro = NULL;
+	lista_lista_comandos->ultimo = NULL;
+	
+	return lista_lista_comandos;
+}
+
+void libera_lista_lista_comandos(tipo_lista_lista_comandos * lista_lista_comandos)
+{
+	while (lista_lista_comandos->primeiro != NULL)
+	{
+		tipo_lista_comandos * aux = lista_lista_comandos->primeiro;
+		lista_lista_comandos->primeiro = aux->prox;
+		free(aux);
+	}
+}
+
+tipo_lista_lista_comandos * concatena_listas_lista_comandos(tipo_lista_lista_comandos * lista1, tipo_lista_lista_comandos * lista2)
+{
+	
+	if (lista1->ultimo == NULL)
+	{
+		free(lista1);
+		return lista2;
+	}
+
+	tipo_lista_comandos * aux_lista = lista2->primeiro;
+	
+	while (aux_lista != NULL)
+	{
+		lista1->ultimo->prox = aux_lista;
+		lista1->ultimo = aux_lista;
+		
+		aux_lista = aux_lista->prox;
+	}
+	
+	
+	free(lista2);
+	
+	return lista1;
+}
+
 tipo_comando * inicializa_comando(char nome_comando[])
 {
 	tipo_comando * comando = (tipo_comando*)malloc(sizeof(tipo_comando));
@@ -510,6 +561,22 @@ void insere_comando(tipo_lista_comandos * lista_comandos, char nome_comando[])
 		
 	
 	lista_comandos->ultimo = comando;
+}
+
+void insere_lista_comandos(tipo_lista_lista_comandos * lista_lista_comandos, tipo_lista_comandos * lista_comandos)
+{
+	
+	if (lista_lista_comandos->ultimo == NULL)
+	{
+		lista_lista_comandos->primeiro = lista_comandos;
+	}
+	else
+	{
+		lista_lista_comandos->ultimo->prox = lista_comandos;
+	}
+		
+	
+	lista_lista_comandos->ultimo = lista_comandos;
 }
 
 tipo_lista_identificadores * inicializa_lista_identificadores()
