@@ -9,7 +9,7 @@ OBJ = lexikon.o principal.o parser.tab.o estruturas_semanticas.o \
 
 MAIN = ../compilador.elf
 
-ARGS = ../testes/teste1.txt
+ARGS = ../testes/exemplo.txt
 
 # =============
 

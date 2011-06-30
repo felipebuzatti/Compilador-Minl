@@ -10,7 +10,7 @@
         \textit{Departamento de Ciência da Computação}\\
         \textit{Universidade Federal de Minas Gerais}\\
 }
-\date{20 de Junho de 2011}
+\date{29 de Junho de 2011}
 
 
 \begin{document}
@@ -30,21 +30,23 @@ Em relação às partes integrantes de nosso sistema, temos que somente a análi
 Neste relatório iremos focar apenas na análise semântica e no modo de execução do compilador como um todo, visto que as outras partes já foram descritas com detalhes nos trabalhos anteriores e não vemos necessidade de repetí-las neste documento.
 
 \subsection{Análise Semântica}
-Infelizmente neste trabalho não foi possível realizarmos a verificação de tipos, estágio presente na análise semântica. Apesar disto, temos um compilador que funciona corretamente para a maioria dos comandos e expressões, exceto para alguns casos, como por exemplo:
+Infelizmente neste trabalho não foi possível realizar tudo o que foi proposto na especificação, mas temos um compilador que funciona corretamente para a maioria dos comandos e expressões, exceto para alguns casos, como por exemplo:
 
 \begin{itemize}
- \item Procedimentos
+ \item Procedimentos passados como parâmetros
  \item Arranjos
  \item Gotos
- \item Constantes de caracteres
- \item Misturas de expressões boolenas com aritméticas
 \end{itemize}
 
-Nestes casos listados, ou a funcionalidade não foi implementada ou não funciona corretamente. Cabe ressaltar que, no caso das funcionalidades não implementadas, há a geração do código, somente não há sua execução, ou seja, não há um erro ou o programa é abortado, somente o código MEPA referente àquela parte não será gerado.
+Também não está sendo realizada a verificação de tipo dos parâmetros em um procedimento e utilizar um return no meio deste não funciona, o retorno só ocorre no final deste.
+
+Em relação a detalhes de nossa implementação, decidimos fazer a verificação de tipos adicionando um campo de tipo na nossa estrutura lista de comandos, com os valores 0 para integer, 1 para real, 2 para booleam e 3 para character. Desta forma, ao realizarmos uma atribuição ou uma soma, por exemplo, era somente verificar se os tipos das listas envolvidas na operação eram os mesmos. Também foi utilizado o campo tipo da tabela de símbolos para a tipagem de variáveis, que já existia anteriormente e agora passou a fazer sentido. 
+
+Além disso, nosso compilador já gera o código final (MEPA) diretamente após a análise semântica, o que consideramos mais efetivo, visto que nesta etapa do trabalho teríamos que realizar todo o processo de compilação como um todo.
 
 \section{Formato dos dados}
 \subsection{Entrada}
-A entrada do programa pode ser feita em qualquer arquivo de texto puro. Obviamente a execução correta pressupõe que esse arquivo de texto contenha programas válidos da linguagem minL, mas o sistema integrado compilador+MEPA é capaz de capturar erros para situações inesperadas, abortando a análise.
+A entrada do programa pode ser feita em qualquer arquivo de texto puro. Obviamente a execução correta pressupõe que esse arquivo de texto contenha programas válidos da linguagem minL, (respeitados os casos nos quais o nosso compilador não funciona - vide acima), mas o sistema integrado compilador+MEPA é capaz de capturar erros para situações inesperadas, abortando a análise e imprimindo uma mensagem de erro explicativa.
 
 \subsection{Saída}
 Caso o arquivo de entrada esteja correto, haverá a saida de um arquivo de texto contendo o código MEPA e também a execução deste programa, visto que a execução do sistema nada mais é do que a entrada de um arquivo MinL seguida da saída de seu código correspondente em MEPA e a interpretação deste código na MEPA.
@@ -83,7 +85,7 @@ Para testar a corretude do analisador foram feitos os testes que se encontram de
 \section{Conclusão}
 Através deste trabalho pudemos compreender melhor o funcionamente de um compilador e conhecer a máquina virtual MEPA, assim como a linguagem MinL. Entretanto, alguns itens do compilador proposto por nós não puderam ser corretamente implementados, o que nos leva a crer que o produto final de nosso trabalho poderia ser melhorado.
 
-Desta forma, acreditamos que o trabalho foi um exercício válido dentro da matéria, mas que poderíamos ter todas suas funcionalidades implementadas de modo correto caso nos fosse dado mais tempo.
+Desta forma, acreditamos que o trabalho foi um exercício válido dentro da matéria, mas que poderíamos ter todas suas funcionalidades implementadas de modo correto caso nos fosse dado mais tempo, pois a implementação dos itens faltantes não é trivial.
 
 \section{Bibliografia}
 \begin{itemize}

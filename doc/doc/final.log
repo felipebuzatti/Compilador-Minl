@@ -1,4 +1,4 @@
-This is pdfTeXk, Version 3.141592-1.40.3 (Web2C 7.5.6) (format=pdflatex 2010.8.27)  20 JUN 2011 14:41
+This is pdfTeXk, Version 3.141592-1.40.3 (Web2C 7.5.6) (format=pdflatex 2010.8.27)  29 JUN 2011 22:57
 entering extended mode
  %&-line parsing enabled.
 **final.tex
@@ -291,30 +291,30 @@ LaTeX Font Info:    Font shape `OMS/cmr/m/n' in size <12> not available
 (Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 36.
  [2]
 LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <12> on input line 69.
+(Font)              <12> on input line 71.
 LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <8> on input line 69.
+(Font)              <8> on input line 71.
 LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <6> on input line 69.
+(Font)              <6> on input line 71.
 
-Overfull \hbox (14.35739pt too wide) in paragraph at lines 70--71
+Overfull \hbox (14.35739pt too wide) in paragraph at lines 72--73
 []\OT1/cmr/m/n/12 Usa ape-nas a sa^^S^^Pda padr~ao: $\OML/cmm/m/it/12 < nome[]d
 o[]programa >< arquivo[]entrada >$ 
  []
 
-
-Overfull \hbox (23.59619pt too wide) in paragraph at lines 71--72
+[3]
+Overfull \hbox (23.59619pt too wide) in paragraph at lines 73--74
 []\OT1/cmr/m/n/12 L^e di-re-ta-mente dos ar-qui-vos: $\OML/cmm/m/it/12 < nome[]
 do[]programa >< arquivo[]entrada >$
  []
 
 
-Overfull \hbox (25.04988pt too wide) in paragraph at lines 74--75
+Overfull \hbox (25.04988pt too wide) in paragraph at lines 76--77
 []\OT1/cmr/m/n/12 Para a re-a-liza^^Xc~ao dos tes-tes atrav^^Ses do sis-tema in
 -te-grado (com-pi-la-dor+MEPA),
  []
 
-[3] [4] (./final.aux) ) 
+[4] (./final.aux) ) 
 Here is how much of TeX's memory you used:
  795 strings out of 94101
  8598 string characters out of 1165810
@@ -322,13 +322,13 @@ Here is how much of TeX's memory you used:
  4118 multiletter control sequences out of 10000+50000
  9809 words of font info for 34 fonts, out of 1200000 for 2000
  637 hyphenation exceptions out of 8191
- 24i,7n,24p,370b,264s stack positions out of 5000i,500n,6000p,200000b,5000s
-</usr/share/texmf-texlive/fonts/type1/bluesky/cm/cmbx12.
-pfb></usr/share/texmf-texlive/fonts/type1/bluesky/cm/cmmi12.pfb></usr/share/tex
-mf-texlive/fonts/type1/bluesky/cm/cmr12.pfb></usr/share/texmf-texlive/fonts/typ
-e1/bluesky/cm/cmsy10.pfb></usr/share/texmf-texlive/fonts/type1/bluesky/cm/cmsy8
-.pfb></usr/share/texmf-texlive/fonts/type1/bluesky/cm/cmti12.pfb>
-Output written on final.pdf (4 pages, 51777 bytes).
+ 24i,7n,24p,565b,264s stack positions out of 5000i,500n,6000p,200000b,5000s
+</usr/share/texmf-texlive/fonts/type1/bluesky/cm/cmbx12.pfb>
+</usr/share/texmf-texlive/fonts/type1/bluesky/cm/cmmi12.pfb></usr/share/texmf-t
+exlive/fonts/type1/bluesky/cm/cmr12.pfb></usr/share/texmf-texlive/fonts/type1/b
+luesky/cm/cmsy10.pfb></usr/share/texmf-texlive/fonts/type1/bluesky/cm/cmsy8.pfb
+></usr/share/texmf-texlive/fonts/type1/bluesky/cm/cmti12.pfb>
+Output written on final.pdf (4 pages, 52581 bytes).
 PDF statistics:
  39 PDF objects out of 1000 (max. 8388607)
  0 named destinations out of 1000 (max. 131072)

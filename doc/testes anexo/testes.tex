@@ -10,54 +10,101 @@
    \textit{Departamento de Ciência da Computação}\\
    \textit{Universidade Federal de Minas Gerais}\\
 }
-\date{20 de Junho de 2011}
+\date{29 de Junho de 2011}
 
 \begin{document}
 \maketitle
 
 \section{Testes e saídas}
+\subsection{exemplo.txt}
+\begin{footnotesize}\begin{verbatim}
+program exemplo
+declare 
+   integer a,b,c;
+do
+   a := 1;
+   b := 2;
+   c := (-b + 1)* (b+a);
+   write(c);
+end
+\end{verbatim}\end{footnotesize}
+
+\subsection{Saída}
+Terminal: 
+\begin{footnotesize}\begin{verbatim}
+-3
+\end{verbatim}\end{footnotesize}
+
+Arquivo:
+\begin{footnotesize}\begin{verbatim}
+INPP
+AMEM 3
+CRCT 1
+ARMZ 0 0
+CRCT 2
+ARMZ 0 1
+CRVL 0 1
+INVR
+CRCT 1
+SOMA
+CRVL 0 1
+CRVL 0 0
+SOMA
+MULT
+ARMZ 0 2
+CRVL 0 2
+IMPR
+PARA
+\end{verbatim}\end{footnotesize}
+
 \subsection{teste1.txt}
 
 \begin{footnotesize}\begin{verbatim}
 program teste1
 declare 
-   integer a, b, c, d;
+   integer a,b;
+   real Felipe;
+   boolean c;
+   char d;
 do
-   read(b, c, d);
-   a := b + -c * (b + d);
-   write(a);
+   a := 1;
+   b := 2;
+   d := 'e';
+   Felipe := 1.1;
+   write(a,b, d, Felipe);
 end
 \end{verbatim}\end{footnotesize}
 
-\subsection{Saída para valores de entrada 2,3,4}
+\subsection{Saída}
 
-\begin{footnotesize}\begin{verbatim}
 Terminal: 
-Entre com um numero: 2
-Entre com um numero: 3
-Entre com um numero: 4
--16
+\begin{footnotesize}\begin{verbatim}
+1
+2
+e
+1.06619e+09
+\end{verbatim}\end{footnotesize}
 
 Arquivo:
+\begin{footnotesize}\begin{verbatim}
 INPP
-AMEM 4
-LEIT
-ARMZ 0 1
-LEIT
-ARMZ 0 2
-LEIT
-ARMZ 0 3
-CRVL 0 1
-CRVL 0 2
-INVR
-CRVL 0 1
-CRVL 0 3
-SOMA
-MULT
-SOMA
+AMEM 5
+CRCT 1
 ARMZ 0 0
+CRCT 2
+ARMZ 0 1
+CRCT 101
+ARMZ 0 4
+CRCF 1.100000
+ARMZ 0 2
 CRVL 0 0
 IMPR
+CRVL 0 1
+IMPR
+CRVL 0 4
+IMPC
+CRVL 0 2
+IMPF
 PARA
 \end{verbatim}\end{footnotesize}
 
@@ -86,15 +133,17 @@ end
 \end{verbatim}\end{footnotesize}
 
 \subsection{Saída para valores de entrada 2,3}
+Terminal: 
 
 \begin{footnotesize}\begin{verbatim}
-Terminal: 
 Entre com um numero: 2
 Entre com um numero: 3
 6
 3
+\end{verbatim}\end{footnotesize}
 
 Arquivo:
+\begin{footnotesize}\begin{verbatim}
 INPP
 AMEM 5
 CRCT 1
@@ -135,19 +184,19 @@ PARA
 program teste3
 declare
    integer a, b, c;
+   integer resultado;
    boolean x, y, z;
 do
    read(c, b);
-   z := b < c;
    y := true;
    a := 1;
+   resultado := a + b+c*5;
    while c < b
    do
       a := a + b;
       b := b + -1;
       y := not y;
    end;
-   z := c < a;
    if z 
    then 
       a := 0;
@@ -158,27 +207,33 @@ end
 
 \subsection{Saída para valores de entrada 4,4}
 
-\begin{footnotesize}\begin{verbatim}
 Terminal: 
+\begin{footnotesize}\begin{verbatim}
 Entre com um numero: 4
 Entre com um numero: 4
 1
+\end{verbatim}\end{footnotesize}
 
 Arquivo:
+\begin{footnotesize}\begin{verbatim}
 INPP
-AMEM 6
+AMEM 7
 LEIT
 ARMZ 0 2
 LEIT
 ARMZ 0 1
-CRVL 0 1
-CRVL 0 2
-CMME
+CRCT 1
 ARMZ 0 5
 CRCT 1
-ARMZ 0 4
-CRCT 1
 ARMZ 0 0
+CRVL 0 0
+CRVL 0 1
+SOMA
+CRVL 0 2
+CRCT 5
+MULT
+SOMA
+ARMZ 0 3
 LW0 CRVL 0 2
 CRVL 0 1
 CMME
@@ -192,15 +247,11 @@ CRCT 1
 INVR
 SOMA
 ARMZ 0 1
-CRVL 0 4
-NEGA
-ARMZ 0 4
-DSVS LW0
-LW1 CRVL 0 2
-CRVL 0 0
-CMME
-ARMZ 0 5
 CRVL 0 5
+NEGA
+ARMZ 0 5
+DSVS LW0
+LW1 CRVL 0 6
 DSVF LI0
 CRCT 0
 ARMZ 0 0
@@ -209,71 +260,99 @@ IMPR
 PARA
 \end{verbatim}\end{footnotesize}
 
-\subsection{testeA.txt}
+\subsection{teste4.txt}
+
 \begin{footnotesize}\begin{verbatim}
-program testeA
+program teste4
 declare
-   integer a, b;
-   boolean c;
-do 
-   read(a, b);
-   c:= a < b*3;
-   write(c);
+   integer a, b, c;
+   procedure p(integer x; integer y; integer z;)
+   do
+      z := x + y + z;
+      write(x, z);
+   end;
+do
+   a := 5;
+   b := 8;
+   c := 3;
+   p(a, b, c);
+   p(7, a+b+c, a);
 end
 \end{verbatim}\end{footnotesize}
 
-\subsection{Saída para valores de entrada 10,2}
-
-\begin{footnotesize}\begin{verbatim}
+\subsection{Saída}
 Terminal: 
-Entre com um numero: 10
-Entre com um numero: 2
-0
+\begin{footnotesize}\begin{verbatim}
+5
+16
+7
+28
+\end{verbatim}\end{footnotesize}
 
 Arquivo:
+\begin{footnotesize}\begin{verbatim}
 INPP
 AMEM 3
-LEIT
+DSVS LFP0
+LIP0 ENTR 1
+CRVL 1 -7
+CRVL 1 -6
+SOMA
+CRVL 1 -5
+SOMA
+ARMZ 1 -5
+CRVL 1 -7
+IMPR
+CRVL 1 -5
+IMPR
+RTPR 3
+LFP0 CRCT 5
 ARMZ 0 0
-LEIT
+CRCT 8
 ARMZ 0 1
+CRCT 3
+ARMZ 0 2
 CRVL 0 0
 CRVL 0 1
-CRCT 3
-MULT
-CMME
-ARMZ 0 2
 CRVL 0 2
-IMPR
+CHPR LIP0 0
+CRCT 7
+CRVL 0 0
+CRVL 0 1
+SOMA
+CRVL 0 2
+SOMA
+CRVL 0 0
+CHPR LIP0 0
 PARA
 \end{verbatim}\end{footnotesize}
 
-\subsection{testeB.txt}
-
+\subsection{teste5.txt}
 \begin{footnotesize}\begin{verbatim}
-program testeB
+program teste5
 declare
-   integer i, j, k,l;
+   integer i,j,k,l;
    boolean b;
 do 
    i := 4 * (5+3) * 5;
    j := 100 + i;
    k := i * j;
    l := i * j + k;
-   b := k = l;  
+   b := k = l;
    write(k,l,b);
 end
 \end{verbatim}\end{footnotesize}
 
 \subsection{Saída}
-
-\begin{footnotesize}\begin{verbatim}
 Terminal: 
+\begin{footnotesize}\begin{verbatim}
 41600
 83200
 0
+\end{verbatim}\end{footnotesize}
 
 Arquivo:
+\begin{footnotesize}\begin{verbatim}
 INPP
 AMEM 5
 CRCT 4
@@ -311,16 +390,125 @@ IMPR
 PARA
 \end{verbatim}\end{footnotesize}
 
-\subsection{testeA.txt}
+\subsection{teste6.txt}
 
 \begin{footnotesize}\begin{verbatim}
+program teste6
+declare
+   integer divisor, number;
+   boolean nofactor, prime, divisor;
+do 
+   read(number);
+   write(number);
+   divisor := number;
+   nofactor := true;
+   if (prime + 1)
+   then
+      divisor := divisor - 1;
+   end;
+end
 \end{verbatim}\end{footnotesize}
 
-\subsection{Saída para valores de entrada 10,2}
+\subsection{Saída}
+Terminal: 
+\begin{footnotesize}\begin{verbatim}
+ERRO! Redefinição de tipo da variável 'divisor'! Abortando...
+
+./MEPA.elf saida.txt 0 0
+MEPA.elf: program.cpp:257: int Program::next(): Assertion `i >= 0 && i < n' failed.
+make: *** [run] Abortado
+\end{verbatim}\end{footnotesize}
+
+Arquivo: não foi gerado, pois houve um erro, a redefinição da variável 'divisor'.
+
+\subsection{teste7.txt}
 
 \begin{footnotesize}\begin{verbatim}
+program teste7
+declare
+   integer divisor, number;
+   boolean nofactor, prime;
+do 
+   read(number);
+   write(number);
+   divisor := number;
+   nofactor := true;
+   if (prime + 1)
+   then
+      divisor := divisor - 1;
+   end;
+end
 \end{verbatim}\end{footnotesize}
 
+\subsection{Saída}
+Terminal: 
+\begin{footnotesize}\begin{verbatim}
+ERRO! Soma incompatível (tipos diferentes)! Abortando...
+
+./MEPA.elf saida.txt 0 0
+MEPA.elf: program.cpp:257: int Program::next(): Assertion `i >= 0 && i < n' failed.
+make: *** [run] Abortado
+\end{verbatim}\end{footnotesize}
+
+Arquivo: não foi gerado, pois houve um erro, a soma de um boolean ('prime') com um valor inteiro (1) no 'if'.
+
+\subsection{teste8.txt}
+
+\begin{footnotesize}\begin{verbatim}
+program teste8
+declare 
+   integer a,b;
+   real d;
+do
+   a := 1;
+   b := 2;
+   d := a+b;
+end
+\end{verbatim}\end{footnotesize}
+
+\subsection{Saída}
+Terminal: 
+\begin{footnotesize}\begin{verbatim}
+ERRO! Atribuição inválida na variável 'd'! Abortando...
+
+./MEPA.elf saida.txt 0 0
+MEPA.elf: program.cpp:257: int Program::next(): Assertion `i >= 0 && i < n' failed.
+make: *** [run] Abortado
+\end{verbatim}\end{footnotesize}
+
+Arquivo: não foi gerado, pois houve um erro, a atribuição de valor inteiro a uma variável declarada como real.
+
+\subsection{teste9.txt}
+
+\begin{footnotesize}\begin{verbatim}
+program teste9
+declare
+	integer a, b, c;
+	procedure p(integer x; integer y; integer z;)
+	do
+		z := x + y + z;
+		write(x, z);
+	end;
+do
+	a := 5;
+	b := 8;
+	c := 3;
+	p(a, b, c);
+	p(7, a+b+c);
+end
+\end{verbatim}\end{footnotesize}
+
+\subsection{Saída}
+Terminal: 
+\begin{footnotesize}\begin{verbatim}
+ERRO! Número de parâmetros na chamada do processo 'p' incompatível. ! Abortando...
+
+./MEPA.elf saida.txt 0 0
+MEPA.elf: program.cpp:257: int Program::next(): Assertion `i >= 0 && i < n' failed.
+make: *** [run] Abortado
+\end{verbatim}\end{footnotesize}
+
+Arquivo: não foi gerado, pois houve um erro, a passagem de apenas 2 parâmetros ao invés de 3.
 
 \end{document}
 

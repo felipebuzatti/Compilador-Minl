@@ -93,7 +93,7 @@ tipo_lista_comandos * proc_stmt1(char * identificador)
 	tipo_simbolo * simbolo_processo = recupera_simbolo(tab_simbolos, identificador);
 	if (simbolo_processo->num_param != 0)
 	{
-		fprintf(stderr, "\nERRO! Processo %s chamado sem parâmetros\n\n", identificador);
+		fprintf(stderr, "\nERRO! Processo %s chamado sem parâmetros! Abortando...\n\n", identificador);
 		exit(0);
 	}
 	
@@ -131,7 +131,7 @@ tipo_lista_comandos * proc_stmt2(char * identificador, tipo_lista_lista_comandos
 	
 	if (num_param_chamados != simbolo_processo->num_param)
 	{
-		fprintf(stderr, "\nNúmero de parâmetros na chamada do processo %s incompatível\n\n", identificador);
+		fprintf(stderr, "\nERRO! Número de parâmetros na chamada do processo '%s' incompatível. ! Abortando...\n\n", identificador);
 		exit(0);
 	}
 	

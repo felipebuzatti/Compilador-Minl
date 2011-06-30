@@ -1,19 +1,9 @@
 program exemplo
-declare
-	integer p, q, a, b, c;
+declare 
+	integer a,b,c;
 do
-	p := 1;
-	read(q, b);
-	c := 2;
-	if q < p 
-	then
-		a := b;
-	else
-		a := b * c;
-	end;
-	if a < 0
-	then
-		a := -a;
-	end;
-	write(a, b);
+	a := 1;
+	b := 2;
+	c := (-b + 1)* (b+a);
+	write(c);
 end

@@ -6,7 +6,7 @@ DIR_MEPA = MEPA
 BIN_COMP = compilador.elf
 BIN_MEPA = MEPA.elf
 
-EXEMPLO = testes/teste1.txt
+EXEMPLO = testes/exemplo.txt
 SAIDA_EXEMPLO = saida.txt
 
 
