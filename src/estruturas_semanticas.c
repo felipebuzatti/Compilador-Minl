@@ -220,6 +220,11 @@ tipo_lista_comandos * assign_stmt(char * identificador, tipo_lista_comandos * li
 {
 	tipo_simbolo * simbolo = recupera_simbolo(tab_simbolos, identificador);
 	
+	if (simbolo == NULL){
+		fprintf(stderr, "\nERRO! Variável '%s' não foi declarada! Abortando...\n\n", identificador);
+		exit(0);
+	}
+	
 	int tipo_simbolo = simbolo->tipo;
 	if (tipo_simbolo != lista_comandos->tipo)
 	{

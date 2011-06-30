@@ -20,7 +20,7 @@
 \section{Introdução}
 \label{intro}
 
-O objetivo desse trabalho é apresentar um compilador integrado para a mini-linguagem MiniL e gerar código para a máaquina virtual (MEPA), de forma a ser possível executar programas em MinL. A máquina virtual MEPA foi definida anteriormente e seus códigos não foram alterados.
+O objetivo desse trabalho é apresentar um compilador integrado para a mini-linguagem MinL e gerar código para a máaquina virtual (MEPA), de forma a ser possível executar programas em MinL. A máquina virtual MEPA foi definida anteriormente e seus códigos não foram alterados.
 
 Desta forma, neste trabalho temos a junção das etapas anteriores (Tabela de Símbolos, Análise Léxica e Análise Sintática), com a adição de mais uma etapa (Análise Semântica) e dos códigos referentes à maquina virtual MEPA e ainda a realização de testes para verificar a corretude de nosso compilador.
 
@@ -30,6 +30,13 @@ Em relação às partes integrantes de nosso sistema, temos que somente a análi
 Neste relatório iremos focar apenas na análise semântica e no modo de execução do compilador como um todo, visto que as outras partes já foram descritas com detalhes nos trabalhos anteriores e não vemos necessidade de repetí-las neste documento.
 
 \subsection{Análise Semântica}
+
+Em relação a detalhes de nossa implementação, utilizamos uma estrutura lista de comandos, que são os comandos MEPA que o nosso programa emitirá na saída. A maior parte das nossas regras trabalha sobre estas listas. 
+
+Decidimos fazer a verificação de tipos adicionando um campo de tipo nesta estrutura lista de comandos, com os valores 0 para integer, 1 para real, 2 para boolean e 3 para character. Desta forma, ao realizarmos uma atribuição ou uma soma, por exemplo, era somente verificar se os tipos das listas envolvidas na operação eram os mesmos. Também foi utilizado o campo tipo da tabela de símbolos para a tipagem de variáveis, que já existia anteriormente e agora passou a fazer sentido. 
+
+Além disso, nosso compilador já gera o código final (MEPA) diretamente após a análise semântica, o que consideramos mais efetivo, visto que nesta etapa do trabalho teríamos que realizar o processo de compilação como um todo.
+
 Infelizmente neste trabalho não foi possível realizar tudo o que foi proposto na especificação, mas temos um compilador que funciona corretamente para a maioria dos comandos e expressões, exceto para alguns casos, como por exemplo:
 
 \begin{itemize}
@@ -39,8 +46,6 @@ Infelizmente neste trabalho não foi possível realizar tudo o que foi proposto 
 \end{itemize}
 
 Também não está sendo realizada a verificação de tipo dos parâmetros em um procedimento e utilizar um return no meio deste não funciona, o retorno só ocorre no final deste.
-
-Em relação a detalhes de nossa implementação, decidimos fazer a verificação de tipos adicionando um campo de tipo na nossa estrutura lista de comandos, com os valores 0 para integer, 1 para real, 2 para booleam e 3 para character. Desta forma, ao realizarmos uma atribuição ou uma soma, por exemplo, era somente verificar se os tipos das listas envolvidas na operação eram os mesmos. Também foi utilizado o campo tipo da tabela de símbolos para a tipagem de variáveis, que já existia anteriormente e agora passou a fazer sentido. As partes de geração de código intermediário e otimização deste não foram utilizadas, ou seja, nosso compilador já gera o código final (MEPA) diretamente após a análise semântica, o que consideramos mais efetivo do que gerar as quádruplas por exemplo para depois lê-las e convertê-las para o código final, visto que nesta etapa do trabalho teríamos que realizar todo o processo de compilação como um todo.
 
 \section{Formato dos dados}
 \subsection{Entrada}
@@ -62,7 +67,7 @@ Dentro da pasta tpfinal, temos os seguintes arquivos:
 \section{Compilação e Execução}
 Foram criados 3 makefiles neste trabalho, um para a MEPA, outro para o compilador e outro que chama os dois primeiros. 
 
-O makefile principal se encontra na pasta tpfinal. Com o comando 'make', teremos a compilação tanto da MEPA como do nosso compilador. Com o comando 'make run', teremos a mesma compilação descrita anteriormente aliada à execução do arquivo de teste default, exemplo.txt, que se encontra na pasta Testes.
+O makefile principal se encontra na pasta tpfinal. Com o comando 'make', teremos a compilação tanto da MEPA como do nosso compilador. Com o comando 'make run', teremos a mesma compilação descrita anteriormente aliada à execução do arquivo de teste default, exemplo.txt, que se encontra na pasta Testes. Este makefile principal gera os executáveis do compilador e da MEPA na pasta raiz, não na pasta src e nem na pasta MEPA.
 
 Para executar somente o compilador passa-se como primeiro argumento um arquivo que contém o programa a ser compilado. E como segundo argumento, opcional, um arquivo para o qual o código MEPA será escrito. Caso esse segundo argumento não se faça presente o código MEPA é direcionado para a saída padrão. Assim, temos como exemplos válidos: 
 \begin{itemize}
