@@ -1,0 +1,9 @@
+program teste8
+declare 
+	integer a,b;
+	real d;
+do
+	a := 1;
+	b := 2;
+	d := a+b;
+end

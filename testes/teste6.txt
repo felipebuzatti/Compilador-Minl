@@ -1,0 +1,13 @@
+program teste6
+declare
+integer divisor, number;
+boolean nofactor, prime, divisor;
+do read(number);
+write(number);
+divisor := number;
+nofactor := true;
+if (prime + 1)
+then
+divisor := divisor - 1;
+end;
+end

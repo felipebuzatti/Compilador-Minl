@@ -1,0 +1,15 @@
+program teste9
+declare
+	integer a, b, c;
+	procedure p(integer x; integer y; integer z;)
+	do
+		z := x + y + z;
+		write(x, z);
+	end;
+do
+	a := 5;
+	b := 8;
+	c := 3;
+	p(a, b, c);
+	p(7, a+b+c);
+end
